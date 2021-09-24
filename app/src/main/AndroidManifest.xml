@@ -13,7 +13,7 @@
             android:name=".Activities.DashboardActivity"
             android:exported="true" />
         <activity
-            android:name=".Activities.MainActivity"
+            android:name=".Activities.SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
