@@ -7,9 +7,11 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.interestcalculator.R;
+import com.example.interestcalculator.databinding.FragmentHiistoryBinding;
 
-public class HiistoryFragment extends Fragment {
+public class HistoryFragment extends Fragment {
+
+    FragmentHiistoryBinding hiistoryBinding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -20,7 +22,7 @@ public class HiistoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        return inflater.inflate(R.layout.fragment_hiistory, container, false);
+        hiistoryBinding = FragmentHiistoryBinding.inflate(inflater, container, false);
+        return hiistoryBinding.getRoot();
     }
 }
