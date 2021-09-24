@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="color_primary">#0609C1</color>
-    <color name="color_scandory">#031485</color>
+    <color name="color_primary">#1216E6</color>
+    <color name="color_scandory">#0C27DC</color>
     <color name="color_accent">#460CCA</color>
     <color name="teal_200">#82D60E</color>
     <color name="white">#FFFFFF</color>
