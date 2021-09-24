@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.InterestCalculator">
         <activity
+            android:name=".DashboardActivity"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
