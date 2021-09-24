@@ -10,7 +10,9 @@
         android:id="@+id/DBappbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/color_primary" />
+        android:background="@color/color_primary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:title="@string/home" />
 
     <FrameLayout
         android:id="@+id/frameLayout"
