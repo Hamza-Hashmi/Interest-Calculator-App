@@ -1,14 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragments.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="10dp">
 
-</FrameLayout>
+        <RadioGroup
+            android:id="@+id/interestRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <RadioButton
+                android:id="@+id/interestSimpleRadio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:buttonTint="@color/color_primary"
+                android:fontFamily="@font/roboto_mediun"
+                android:text="@string/simple"
+                android:textColor="@color/color_scandory" />
+
+            <RadioButton
+                android:id="@+id/interestCompountRadio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:buttonTint="@color/color_primary"
+                android:fontFamily="@font/roboto_mediun"
+                android:text="@string/compount"
+                android:textColor="@color/color_scandory"
+                android:textSize="16sp" />
+        </RadioGroup>
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -25,13 +25,13 @@ public class DashboardActivity extends AppCompatActivity {
         dashboardBinding = ActivityDashboardBinding.inflate(getLayoutInflater());
         setContentView(dashboardBinding.getRoot());
 
+        setSupportActionBar(dashboardBinding.DBappbar);
         if (savedInstanceState == null) {
+            dashboardBinding.DBappbar.setTitle(R.string.home);
             HomeFragment homeFragment = new HomeFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, homeFragment).commit();
         }
-        setSupportActionBar(dashboardBinding.DBappbar);
         setupBottomNavigaion();
-//        dashboardBinding.bottomNavigation.setOnItemSelectedListener(navigationItemSelectedListener);
 
 
     }
@@ -42,15 +42,19 @@ public class DashboardActivity extends AppCompatActivity {
             Fragment selectedFragment = null;
             switch (item.getItemId()) {
                 case R.id.home:
+                    dashboardBinding.DBappbar.setTitle(R.string.home);
                     selectedFragment = new HomeFragment();
                     break;
                 case R.id.history:
+                    dashboardBinding.DBappbar.setTitle(R.string.history);
                     selectedFragment = new HistoryFragment();
                     break;
                 case R.id.saved:
+                    dashboardBinding.DBappbar.setTitle(R.string.saved);
                     selectedFragment = new SavedFragment();
                     break;
                 case R.id.settings:
+                    dashboardBinding.DBappbar.setTitle(R.string.settings);
                     selectedFragment = new SettingsFragment();
                     break;
 
@@ -60,27 +64,4 @@ public class DashboardActivity extends AppCompatActivity {
             return true;
         });
     }
-//    @SuppressLint("NonConstantResourceId")
-//    private final  navigationItemSelectedListener =
-//            item -> {
-//                Fragment selectedFragment = null;
-//                switch (item.getItemId()) {
-//                    case R.id.home:
-//                        selectedFragment = new HomeFragment();
-//                        break;
-//                    case R.id.history:
-//                        selectedFragment = new HistoryFragment();
-//                        break;
-//                    case R.id.saved:
-//                        selectedFragment = new SavedFragment();
-//                        break;
-//                    case R.id.settings:
-//                        selectedFragment = new SettingsFragment();
-//                        break;
-//
-//                }
-//                assert selectedFragment != null;
-//                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, selectedFragment).commit();
-//                return true;
-//            };
 }

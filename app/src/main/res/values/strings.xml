@@ -6,4 +6,6 @@
     <string name="history">History</string>
     <string name="saved">Saved</string>
     <string name="settings">Settings</string>
+    <string name="simple">Simple</string>
+    <string name="compount">Compount</string>
 </resources>
