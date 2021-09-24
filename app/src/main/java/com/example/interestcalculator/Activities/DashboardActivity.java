@@ -1,8 +1,10 @@
-package com.example.interestcalculator;
+package com.example.interestcalculator.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.interestcalculator.R;
 
 public class DashboardActivity extends AppCompatActivity {
 

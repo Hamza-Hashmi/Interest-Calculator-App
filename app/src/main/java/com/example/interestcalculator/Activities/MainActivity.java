@@ -1,14 +1,16 @@
-package com.example.interestcalculator;
+package com.example.interestcalculator.Activities;
+
+import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
+import com.example.interestcalculator.R;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.Main);
+        setContentView(R.layout.activity_main);
     }
 }
