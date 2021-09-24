@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">InterestCalculator</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">Home</string>
+    <string name="history">History</string>
+    <string name="saved">Saved</string>
+    <string name="settings">Settings</string>
+    <string name="simple">Simple</string>
+    <string name="compount">Compound</string>
+    <string name="principle_amount">Principle Amount</string>
+    <string name="interest_per_month_in_rupees">Interest Per Month In Rupees</string>
+    <string name="given_date">Given Date</string>
+    <string name="return_date">Return Date</string>
+    <string name="calculate">Calculate</string>
 </resources>
