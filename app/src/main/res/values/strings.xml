@@ -13,4 +13,10 @@
     <string name="given_date">Given Date</string>
     <string name="return_date">Return Date</string>
     <string name="calculate">Calculate</string>
+    <string name="_12_9_sep_2021_14_20">12-9(SEP) 2021 14:20</string>
+    <string name="interest">Interest</string>
+    <string name="interest_type">Interest Type</string>
+    <string name="interest_amount">Interest Amount</string>
+    <string name="duration">Duration</string>
+    <string name="total_amount_19_2000">Total Amount: 19,2000</string>
 </resources>
