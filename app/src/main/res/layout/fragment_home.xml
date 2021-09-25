@@ -6,6 +6,7 @@
     tools:context=".Fragments.HomeFragment">
 
     <RelativeLayout
+        android:id="@+id/RLmain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
@@ -165,5 +166,31 @@
         </LinearLayout>
 
     </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/RLmain"
+        android:layout_marginTop="20dp"
+        android:background="@color/color_primary">
+
+        <ImageView
+            android:id="@+id/btnShare"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/btnSave"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="10dp"
+            android:src="@drawable/share_icon" />
+
+        <ImageView
+            android:id="@+id/btnSave"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="10dp"
+            android:src="@drawable/save_icon" />
+    </RelativeLayout>
+
 
 </RelativeLayout>
