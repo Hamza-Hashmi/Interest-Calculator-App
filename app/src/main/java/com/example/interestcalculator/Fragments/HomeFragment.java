@@ -89,10 +89,6 @@ public class HomeFragment extends Fragment {
                     long difference = Math.abs(date1.getTime() - date2.getTime());
                     duration = difference / (24 * 60 * 60 * 1000);
 
-                    Log.e("TAG", "onCreateView: getDDurtion " +getIntrestDuration(duration) );
-                    Log.e("TAG", "onCreateView: "  + duration);
-
-
                     long interest = (Long.parseLong(pricipalAmout) * Long.parseLong(interestAmountPerMonth) / 100) * mDuration;
                     Log.e("TAG", "onCreateView: interest " + interest);
 
