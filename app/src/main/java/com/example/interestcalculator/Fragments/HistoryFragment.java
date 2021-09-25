@@ -31,7 +31,6 @@ public class HistoryFragment extends Fragment {
 
 
         intersetHistoryList = new ArrayList<>(dbHeleper.getHistory());
-        Log.e("TAG", "onCreate: " + intersetHistoryList );
         intersetHistoryList.forEach((model) -> Log.e("TAG", "onCreate: " + model ));
     }
 
