@@ -8,21 +8,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.interestcalculator.databinding.FragmentHomeBinding;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 public class HomeFragment extends Fragment {
 
     FragmentHomeBinding homeBinding;
-    String givenDate, returnDate;
     DatePickerDialog.OnDateSetListener mDateSetlistener, mRDateListener;
 
     @Override
@@ -51,7 +47,8 @@ public class HomeFragment extends Fragment {
             int month = cal.get(Calendar.MONTH);
             int day = cal.get(Calendar.DAY_OF_MONTH);
 
-            givenDate = day + "/" + month + 1 + "/" + year;
+            month = month + 1;
+
             DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                     mRDateListener, day, month, year);
             datePickerDialog.setTitle("Return Date");
@@ -59,7 +56,7 @@ public class HomeFragment extends Fragment {
             datePickerDialog.show();
         });
         mRDateListener = (view, year, month, dayOfMonth) -> {
-            homeBinding.edtReturnDate.getEditText().setText(dayOfMonth + "-" + month + 1 + "(" + getMonthFormat(month + 1) + ")" + "-" + year);
+            homeBinding.edtReturnDate.getEditText().setText(dayOfMonth + "-" + month + "(" + getMonthFormat(month + 1) + ")" + "-" + year);
         };
     }
 
@@ -72,9 +69,7 @@ public class HomeFragment extends Fragment {
             int month = cal.get(Calendar.MONTH);
             int day = cal.get(Calendar.DAY_OF_MONTH);
 
-
-            returnDate = day + "/" + month + 1 + "/" + year;
-
+            month = month + 1;
             DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                     mDateSetlistener, day, month, year);
             datePickerDialog.setTitle("Given Date");
@@ -83,7 +78,7 @@ public class HomeFragment extends Fragment {
         });
 
         mDateSetlistener = (view, year, month, dayOfMonth) -> {
-            homeBinding.edtGivenDate.getEditText().setText(dayOfMonth + "-" + month + 1 + "(" + getMonthFormat(month + 1) + ")" + "-" + year);
+            homeBinding.edtGivenDate.getEditText().setText(dayOfMonth + "-" + month + "(" + getMonthFormat(month + 1) + ")" + "-" + year);
         };
 
     }
