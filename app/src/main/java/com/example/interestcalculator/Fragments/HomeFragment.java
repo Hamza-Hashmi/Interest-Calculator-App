@@ -1,6 +1,7 @@
 package com.example.interestcalculator.Fragments;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -19,6 +20,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.interestcalculator.DbHeleper;
 import com.example.interestcalculator.R;
+import com.example.interestcalculator.databinding.CustomSaveDialougeBinding;
 import com.example.interestcalculator.databinding.FragmentHomeBinding;
 import com.example.interestcalculator.models.InterestModel;
 
@@ -105,11 +107,13 @@ public class HomeFragment extends Fragment {
     }
 
     private void calculateAndSaveSimpleInterest(String pricipalAmout, String interestAmountPerMonth) {
-        long interest = (Long.parseLong(pricipalAmout) * Long.parseLong(interestAmountPerMonth) / 100) * mDuration;
-        Log.e("TAG", "onCreateView: interest " + interest);
 
+         long amount =  Long.parseLong(pricipalAmout);
+         long interstAmount =Long.parseLong(interestAmountPerMonth);
+
+        Log.e("TAG", "calculateAndSaveSimpleInterest: duration"  + getIntrestDuration(duration) );
+        long interest = ((amount * interstAmount) / 100) * mDuration;
         long totalAmount = Long.parseLong(pricipalAmout) + interest;
-
 
         try {
 
@@ -125,8 +129,8 @@ public class HomeFragment extends Fragment {
 
                 homeBinding.btnSave.setOnClickListener(view ->{
 
+                    showDialouge(pricipalAmout,interest,totalAmount,interestAmountPerMonth);
 
-                    interestModel = new InterestModel(String.valueOf(System.currentTimeMillis()),startDate,endDate,pricipalAmout,getIntrestDuration(duration),String.valueOf(interest),interestAmountPerMonth,interestType,String.valueOf(totalAmount));
                 });
 
 
@@ -274,5 +278,47 @@ public class HomeFragment extends Fragment {
           }
            mDuration = days;
           return days + " days";
+    }
+
+
+
+    private void showDialouge(String pricipalAmout, long interest, long totalAmount, String interestAmountPerMonth){
+        CustomSaveDialougeBinding mBinding;
+
+        mBinding = CustomSaveDialougeBinding.inflate(getLayoutInflater());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setCancelable(false);
+        builder.setView(mBinding.getRoot());
+
+
+        AlertDialog dialog = builder.create();
+
+        mBinding.btnCancel.setOnClickListener(view -> dialog.dismiss());
+
+        mBinding.btnSaveRecord.setOnClickListener(view -> {
+            String cityName = mBinding.cityNameEt.getText().toString();
+            String recordName = mBinding.recordNameEt.getText().toString();
+            String remark = mBinding.remarksEt.getText().toString();
+            if (TextUtils.isEmpty(cityName ) || TextUtils.isEmpty(recordName) || TextUtils.isEmpty(remark)){
+                dialog.dismiss();
+                Toast.makeText(requireContext(), "Data not saved", Toast.LENGTH_SHORT).show();
+            }
+            else{
+
+                interestModel = new InterestModel(String.valueOf(System.currentTimeMillis()),startDate,endDate,pricipalAmout,getIntrestDuration(duration),String.valueOf(interest),interestAmountPerMonth,interestType,String.valueOf(totalAmount),recordName,cityName,remark);
+
+                if (dbHeleper.saveInterest(interestModel)){
+                    Toast.makeText(requireContext(), "Data Saved", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+                else {
+                    Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            }
+
+        });
+        dialog.show();
     }
 }

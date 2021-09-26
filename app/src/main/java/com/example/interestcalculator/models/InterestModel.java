@@ -28,7 +28,7 @@ public class InterestModel {
                          String returnDate, String principalAmount, String durationPeriod,
                          String interest, String interestAmount, String interestType,
                          String totalAmount, String recordName, String cityName, String remarks) {
-        this.id = id;
+
         this.currentDate = currentDate;
         this.givenDate = givenDate;
         this.returnDate = returnDate;

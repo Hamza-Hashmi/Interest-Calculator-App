@@ -40,23 +40,9 @@ public class DbHeleper extends SQLiteOpenHelper {
         // at last we are calling a exec sql
         // method to execute above sql query
 
-        String querySaveInterest = "CREATE TABLE " + TABLE_SAVE_INTEREST + "("
-                + "id" + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "currentDate" + " TEXT,"
-                + "givenDate" + " TEXT,"
-                + "returnDate" + " TEXT,"
-                + "principalAmount" + " TEXT,"
-                + "durationPeriod" + "TEXT,"
-                + "interest" + "Text,"
-                + "interestAmount" + "TEXT,"
-                + "interestType" + "TEXT,"
-                + "totalAmount" + "TEXT,"
-                +"recordName" + "TEXT,"
-                +"cityName" + "TEXT,"
-                + "remarks" + "TEXT)";
 
         db.execSQL("create Table interest_histroy(id INTEGER PRIMARY KEY AUTOINCREMENT,currentDate TEXT,givenDate TEXT,returnDate TEXT,principalAmount TEXT,durationPeriod TEXT,interest TEXT,interestAmount TEXT,interestType TEXT,totalAmount TEXT) ");
-        db.execSQL("create Table save_interest(id INTEGER PRIMARY KEY AUTOINCREMENT,curretnDate TEXT,givenDate TEXT,returnDate TEXT,principalAmount TEXT,durationPeriod TEXT,interest TEXT,interestAmount TEXT,interestType TEXT,totalAmount TEXT,recordName TEXT,cityName  TEXT,remarks TEXT)");
+        db.execSQL("create Table save_interest(id INTEGER PRIMARY KEY AUTOINCREMENT,currentDate TEXT,givenDate TEXT,returnDate TEXT,principalAmount TEXT,durationPeriod TEXT,interest TEXT,interestAmount TEXT,interestType TEXT,totalAmount TEXT,recordName TEXT,cityName TEXT,remarks TEXT)");
         db.execSQL("create Table interim_table(id INTEGER PRIMARY KEY AUTOINCREMENT,fid TEXT,principalAmount TEXT,totalAmount TEXT,currentDate TEXT,intrimePayment TEXT,remianingAmount TEXT,durationPeriod TEXT)");
     }
 
@@ -119,10 +105,14 @@ public class DbHeleper extends SQLiteOpenHelper {
         values.put("interestAmount", model.getInterestAmount());
         values.put("interestType", model.getInterestType());
         values.put("totalAmount", model.getTotalAmount());
+        values.put("recordName", model.getRecordName());
+        values.put("cityName", model.getCityName());
+        values.put("remarks", model.getRemarks());
+
 
         // after adding all values we are passing
         // content values to our table.
-        long result = db.insert(TABLE_INTEREST_HISTORY, null, values);
+        long result = db.insert(TABLE_SAVE_INTEREST, null, values);
 
         // at last we are closing our
         // database after adding database.
