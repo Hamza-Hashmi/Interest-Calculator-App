@@ -15,7 +15,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/custom_history_header"
+            android:background="@drawable/custon_saved_history_header"
             android:padding="10dp">
 
             <TextView
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:contentDescription="@string/todo"
-                android:src="@drawable/ic_baseline_delete_24" />
+                android:src="@drawable/menu_icon" />
 
         </RelativeLayout>
 
@@ -42,9 +42,9 @@
             android:id="@+id/tvCityName"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/beig"
             android:fontFamily="@font/roboto_mediun"
             android:gravity="center"
-            android:background="@color/beig"
             android:padding="5dp"
             android:paddingStart="10dp"
             android:text="@string/city_name"
@@ -77,7 +77,7 @@
                         android:fontFamily="@font/roboto_mediun"
                         android:paddingStart="10dp"
                         android:text="@string/given_date"
-                        app:drawableStartCompat="@drawable/calander_icon"
+                        app:drawableStartCompat="@drawable/icn_calander"
                         tools:ignore="RtlSymmetry" />
 
                     <TextView
@@ -95,7 +95,7 @@
                         android:fontFamily="@font/roboto_mediun"
                         android:paddingStart="10dp"
                         android:text="@string/return_date"
-                        app:drawableStartCompat="@drawable/calander_icon"
+                        app:drawableStartCompat="@drawable/icn_calander"
                         tools:ignore="RtlSymmetry" />
 
                     <TextView
@@ -122,7 +122,7 @@
                         android:fontFamily="@font/roboto_mediun"
                         android:paddingStart="10dp"
                         android:text="@string/principle_amount"
-                        app:drawableStartCompat="@drawable/calander_icon"
+                        app:drawableStartCompat="@drawable/ic_rupee"
                         tools:ignore="RtlSymmetry" />
 
                     <TextView
@@ -140,8 +140,8 @@
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/roboto_mediun"
                         android:paddingStart="10dp"
-                        android:text="@string/principle_amount"
-                        app:drawableStartCompat="@drawable/calander_icon"
+                        android:text="@string/duration"
+                        app:drawableStartCompat="@drawable/duration_icon"
                         tools:ignore="RtlSymmetry" />
 
                     <TextView
@@ -204,7 +204,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/beig"
                 android:orientation="horizontal"
-                android:padding="10dp"
+                android:padding="5dp"
                 android:weightSum="3">
 
                 <TextView
@@ -246,7 +246,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_regular"
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="5dp"
             android:text="@string/total_amount_19_2000"
             android:textSize="18sp" />
     </LinearLayout>
