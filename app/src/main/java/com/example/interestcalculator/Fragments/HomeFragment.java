@@ -88,23 +88,7 @@ public class HomeFragment extends Fragment {
                     Log.e("TAG", "onCreateView: " + date2 );
                     long difference = Math.abs(date1.getTime() - date2.getTime());
                     duration = difference / (24 * 60 * 60 * 1000);
-
-                    long interest = (Long.parseLong(pricipalAmout) * Long.parseLong(interestAmountPerMonth) / 100) * mDuration;
-                    Log.e("TAG", "onCreateView: interest " + interest);
-
-                    long totalAmount = Long.parseLong(pricipalAmout) + interest;
-
-
-                    try {
-
-                        interestModel = new InterestModel(String.valueOf(System.currentTimeMillis()),startDate,endDate,pricipalAmout,getIntrestDuration(duration),String.valueOf(interest),interestAmountPerMonth,interestType,String.valueOf(totalAmount));
-                        Log.e("TAG", "onCreateView: " + interestModel.toString() );
-                        dbHeleper.addNewHistory(interestModel);
-
-                        Toast.makeText(getContext(), "History saved", Toast.LENGTH_SHORT).show();
-                    }catch (Exception e){
-                        Log.e("TAG", "insert exception " + e.getMessage() );
-                    }
+                    calculateAndSaveSimpleInterest(pricipalAmout,interestAmountPerMonth);
 
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -117,6 +101,42 @@ public class HomeFragment extends Fragment {
 
 
         return homeBinding.getRoot();
+
+    }
+
+    private void calculateAndSaveSimpleInterest(String pricipalAmout, String interestAmountPerMonth) {
+        long interest = (Long.parseLong(pricipalAmout) * Long.parseLong(interestAmountPerMonth) / 100) * mDuration;
+        Log.e("TAG", "onCreateView: interest " + interest);
+
+        long totalAmount = Long.parseLong(pricipalAmout) + interest;
+
+
+        try {
+
+            interestModel = new InterestModel(String.valueOf(System.currentTimeMillis()),startDate,endDate,pricipalAmout,getIntrestDuration(duration),String.valueOf(interest),interestAmountPerMonth,interestType,String.valueOf(totalAmount));
+            Log.e("TAG", "onCreateView: " + interestModel.toString() );
+            if (dbHeleper.addNewHistory(interestModel)){
+
+                homeBinding.bottomLayout.setVisibility(View.VISIBLE);
+                homeBinding.durationTv.setText("Duration: " + getIntrestDuration(duration));
+                homeBinding.intersetTv.setText("Interest: " +interest);
+                homeBinding.totalAmountTv.setText("Total Amount: " + totalAmount);
+                homeBinding.interestTypeTv.setText(interestType);
+
+                homeBinding.btnSave.setOnClickListener(view ->{
+
+
+                    interestModel = new InterestModel(String.valueOf(System.currentTimeMillis()),startDate,endDate,pricipalAmout,getIntrestDuration(duration),String.valueOf(interest),interestAmountPerMonth,interestType,String.valueOf(totalAmount));
+                });
+
+
+            }else{
+                Toast.makeText(getContext(), "An Error Occured ", Toast.LENGTH_SHORT).show();
+            }
+
+        }catch (Exception e){
+            Log.e("TAG", "insert exception " + e.getMessage() );
+        }
 
     }
 
