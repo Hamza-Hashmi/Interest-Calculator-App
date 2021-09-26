@@ -35,7 +35,7 @@ public class HistoryFragment extends Fragment {
         intersetHistoryList = new ArrayList<>(dbHeleper.getHistory());
         //intersetHistoryList.forEach((model) -> Log.e("TAG", "onCreate: " + model.getDurationPeriod() ));
 
-        adapter = new HistoryAdapter(intersetHistoryList);
+        adapter = new HistoryAdapter(intersetHistoryList,requireContext());
         hiistoryBinding.historyRv.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 

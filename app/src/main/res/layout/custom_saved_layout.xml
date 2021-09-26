@@ -29,7 +29,7 @@
                 android:textSize="18sp" />
 
             <ImageView
-                android:id="@+id/btnDeleteHistory"
+                android:id="@+id/btnMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -247,6 +247,7 @@
             android:fontFamily="@font/roboto_regular"
             android:gravity="center"
             android:padding="5dp"
+            android:id="@+id/totalAmountTv"
             android:text="@string/total_amount_19_2000"
             android:textSize="18sp" />
     </LinearLayout>

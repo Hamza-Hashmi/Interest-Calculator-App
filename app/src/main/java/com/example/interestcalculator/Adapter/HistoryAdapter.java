@@ -1,5 +1,6 @@
 package com.example.interestcalculator.Adapter;
 
+import android.content.Context;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.interestcalculator.DbHeleper;
 import com.example.interestcalculator.databinding.CustomHistoryLayoutBinding;
 import com.example.interestcalculator.models.InterestModel;
 
@@ -19,8 +21,14 @@ import java.util.Locale;
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
 
     ArrayList<InterestModel> list;
-    public HistoryAdapter(ArrayList<InterestModel> list) {
+    Context context;
+    DbHeleper dbHeleper;
+    public HistoryAdapter(ArrayList<InterestModel> list,Context context)
+    {
         this.list = list;
+        this.context = context;
+
+        dbHeleper = new DbHeleper(context);
     }
 
     @NonNull
@@ -37,7 +45,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
        holder.binding.tvDuration.setText(model.getDurationPeriod());
        holder.binding.tvInterest.setText(model.getInterestAmount());
        holder.binding.tvInterestAmount.setText(model.getInterest());
-       holder.binding.tvInterestType.setText(model.getPrincipalAmount());
+       holder.binding.tvInterestType.setText(model.getInterestType());
+       holder.binding.tvPrincipleAmount.setText(model.getPrincipalAmount());
        holder.binding.tvReturnDate.setText(model.getReturnDate());
        holder.binding.totalAmountTv.setText("Total Amount : " + model.getTotalAmount());
 
@@ -49,6 +58,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
         holder.binding.btnDeleteHistory.setOnClickListener(view ->{
            Log.e("TAG", "onBindViewHolder: delete clicked" );
+           dbHeleper.deleteHistory(Integer.parseInt(model.getId()));
+           list.remove(position);
+           notifyDataSetChanged();
        });
     }
 

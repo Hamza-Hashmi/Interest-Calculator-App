@@ -85,17 +85,10 @@ public class DbHeleper extends SQLiteOpenHelper {
     // save interest
     public boolean saveInterest(InterestModel model) {
 
-        // on below line we are creating a variable for
-        // our sqlite database and calling writable method
-        // as we are writing data in our database.
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // on below line we are creating a
-        // variable for content values.
         ContentValues values = new ContentValues();
 
-        // on below line we are passing all values
-        // along with its key and value pair.
         values.put("currentDate", model.getCurrentDate());
         values.put("givenDate", model.getGivenDate());
         values.put("returnDate", model.getReturnDate());
@@ -109,13 +102,7 @@ public class DbHeleper extends SQLiteOpenHelper {
         values.put("cityName", model.getCityName());
         values.put("remarks", model.getRemarks());
 
-
-        // after adding all values we are passing
-        // content values to our table.
         long result = db.insert(TABLE_SAVE_INTEREST, null, values);
-
-        // at last we are closing our
-        // database after adding database.
         db.close();
 
         return result != -1;
@@ -155,6 +142,52 @@ public class DbHeleper extends SQLiteOpenHelper {
             }while (cursor.moveToNext());
         }
         return arrayList;
+    }
+
+    //get the all history
+    public ArrayList<InterestModel> getSaveRecord() {
+        ArrayList<InterestModel> arrayList = new ArrayList<>();
+
+        // select all query
+        String select_query= "SELECT *FROM " + TABLE_SAVE_INTEREST;
+
+        SQLiteDatabase db = this .getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_query, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                InterestModel model = new InterestModel();
+                model.setId(cursor.getString(0));
+                model.setCurrentDate(cursor.getString(1));
+                model.setGivenDate(cursor.getString(2));
+                model.setReturnDate(cursor.getString(3));
+                model.setPrincipalAmount(cursor.getString(4));
+                model.setDurationPeriod(cursor.getString(5));
+                model.setInterest(cursor.getString(6));
+                model.setInterestAmount(cursor.getString(7));
+                model.setInterestType(cursor.getString(8));
+                model.setTotalAmount(cursor.getString(9));
+                model.setRecordName(cursor.getString(10));
+                model.setCityName(cursor.getString(11));
+                model.setRemarks(cursor.getString(12));
+                Log.e("TAG", "getHistory: model " + model );
+           /*     noteModel.setID(cursor.getString(0));
+                noteModel.setTitle(cursor.getString(1));
+                noteModel.setDes(cursor.getString(2));
+           */     arrayList.add(model);
+            }while (cursor.moveToNext());
+        }
+        return arrayList;
+    }
+
+
+
+    // delete History
+    public void deleteHistory(int p){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM "+ TABLE_INTEREST_HISTORY + " WHERE " + "id" + " = "+p+"");
+        db.close();
     }
 
     @Override
