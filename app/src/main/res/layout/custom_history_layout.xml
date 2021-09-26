@@ -19,6 +19,7 @@
             android:padding="10dp">
 
             <TextView
+                android:id="@+id/savedDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_mediun"
@@ -124,7 +125,7 @@
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/roboto_mediun"
                         android:paddingStart="10dp"
-                        android:text="@string/principle_amount"
+                        android:text="@string/duration"
                         app:drawableStartCompat="@drawable/calander_icon"
                         tools:ignore="RtlSymmetry" />
 
@@ -231,6 +232,7 @@
             android:fontFamily="@font/roboto_regular"
             android:gravity="center"
             android:padding="10dp"
+            android:id="@+id/totalAmountTv"
             android:text="@string/total_amount_19_2000"
             android:textSize="18sp" />
     </LinearLayout>
