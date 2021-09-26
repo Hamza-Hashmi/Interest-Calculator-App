@@ -19,4 +19,7 @@
     <string name="interest_amount">Interest Amount</string>
     <string name="duration">Duration</string>
     <string name="total_amount_19_2000">Total Amount: 19,2000</string>
+    <string name="savd_name">Saved Name</string>
+    <string name="city_name">City Name</string>
+    <string name="todo">TODO</string>
 </resources>

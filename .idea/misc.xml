@@ -7,12 +7,15 @@
         <entry key="app/src/main/res/drawable/calander_drawable.xml" value="0.2388888888888889" />
         <entry key="app/src/main/res/drawable/custom_history_border.xml" value="0.2722222222222222" />
         <entry key="app/src/main/res/drawable/custom_history_header.xml" value="0.2722222222222222" />
+        <entry key="app/src/main/res/drawable/custon_saved_history_header.xml" value="0.20104166666666667" />
         <entry key="app/src/main/res/drawable/history_icon.xml" value="0.2388888888888889" />
+        <entry key="app/src/main/res/drawable/ic_rupee.xml" value="0.20104166666666667" />
         <entry key="app/src/main/res/drawable/scandory_stripe_drawable.xml" value="0.15260416666666668" />
         <entry key="app/src/main/res/drawable/teal_color_drawable.xml" value="0.15260416666666668" />
         <entry key="app/src/main/res/layout/activity_dashboard.xml" value="0.2" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.26458333333333334" />
         <entry key="app/src/main/res/layout/custom_history_layout.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/custom_saved_layout.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.2" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.26458333333333334" />
       </map>
