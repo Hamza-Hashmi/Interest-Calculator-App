@@ -2,10 +2,14 @@ package com.example.interestcalculator;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.interestcalculator.models.InterestModel;
+
+import java.util.ArrayList;
 
 public class DbHeleper extends SQLiteOpenHelper {
     // creating a constant variables for our database.
@@ -18,63 +22,180 @@ public class DbHeleper extends SQLiteOpenHelper {
     // below variable is for our table name.
     private static final String TABLE_SAVE_INTEREST = "save_interest";
     private static final String TABLE_INTEREST_HISTORY = "interest_histroy";
-    private static final String TABLE_INTERIM_PAYMENT = "interin_table";
-
-    public static final String ID = "id";
-    public static final String currentDate = "currentDate";
-    public static final String givenDate = "givenDate";
-    public static final String returnDate = "returnDate";
-    public static final String principalAmount = "principalAmount";
-    public static final String durationPeriod = "durationPeriod";
-    public static final String interest = "interest";
-    public static final String interestAmount = "interestAmount";
-    public static final String interestType = "interestType";
-    public static final String totalAmount = "totalAmount";
+    private static final String TABLE_INTERIM_PAYMENT = "interim_table";
 
 
     public DbHeleper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
-        SQLiteDatabase db = this.getWritableDatabase();
     }
 
+    // below method is for creating a database by running a sqlite query
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + TABLE_INTEREST_HISTORY
-                + "(ID INTEGER PRIMARY KEY AUTOINCREMENT,currentDate TEXT,givenDate TEXT,returnDate TEXT,principalAmount TEXT," +
-                "durationPeriod TEXT,interest TEXT," +
-                "interestAmount TEXT,interestType TEXT," +
-                "totalAmount TEXT)");
+        // on below line we are creating
+        // an sqlite query and we are
+        // setting our column names
+        // along with their data types.
 
+        // at last we are calling a exec sql
+        // method to execute above sql query
+
+
+        db.execSQL("create Table interest_histroy(id INTEGER PRIMARY KEY AUTOINCREMENT,currentDate TEXT,givenDate TEXT,returnDate TEXT,principalAmount TEXT,durationPeriod TEXT,interest TEXT,interestAmount TEXT,interestType TEXT,totalAmount TEXT) ");
+        db.execSQL("create Table save_interest(id INTEGER PRIMARY KEY AUTOINCREMENT,currentDate TEXT,givenDate TEXT,returnDate TEXT,principalAmount TEXT,durationPeriod TEXT,interest TEXT,interestAmount TEXT,interestType TEXT,totalAmount TEXT,recordName TEXT,cityName TEXT,remarks TEXT)");
+        db.execSQL("create Table interim_table(id INTEGER PRIMARY KEY AUTOINCREMENT,fid TEXT,principalAmount TEXT,totalAmount TEXT,currentDate TEXT,intrimePayment TEXT,remianingAmount TEXT,durationPeriod TEXT)");
     }
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_INTEREST_HISTORY);
-    }
-
+    // this method is use to add new course to our sqlite database.
     public boolean addNewHistory(InterestModel model) {
 
+        // on below line we are creating a variable for
+        // our sqlite database and calling writable method
+        // as we are writing data in our database.
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // on below line we are creating a
+        // variable for content values.
+        ContentValues values = new ContentValues();
+
+        // on below line we are passing all values
+        // along with its key and value pair.
+        values.put("currentDate", model.getCurrentDate());
+        values.put("givenDate", model.getGivenDate());
+        values.put("returnDate", model.getReturnDate());
+        values.put("principalAmount", model.getPrincipalAmount());
+        values.put("durationPeriod", model.getDurationPeriod());
+        values.put("interest", model.getInterest());
+        values.put("interestAmount", model.getInterestAmount());
+        values.put("interestType", model.getInterestType());
+        values.put("totalAmount", model.getTotalAmount());
+
+        // after adding all values we are passing
+        // content values to our table.
+        long result = db.insert(TABLE_INTEREST_HISTORY, null, values);
+
+        // at last we are closing our
+        // database after adding database.
+        db.close();
+
+        return result != -1;
+    }
+
+
+    // save interest
+    public boolean saveInterest(InterestModel model) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
-        values.put(currentDate, model.getCurrentDate());
-        values.put(givenDate, model.getGivenDate());
-        values.put(returnDate, model.getReturnDate());
-        values.put(principalAmount, model.getPrincipalAmount());
-        values.put(durationPeriod, model.getDurationPeriod());
-        values.put(interest, model.getInterest());
-        values.put(interestAmount, model.getInterestAmount());
-        values.put(interestType, model.getInterestType());
-        values.put(totalAmount, model.getTotalAmount());
+        values.put("currentDate", model.getCurrentDate());
+        values.put("givenDate", model.getGivenDate());
+        values.put("returnDate", model.getReturnDate());
+        values.put("principalAmount", model.getPrincipalAmount());
+        values.put("durationPeriod", model.getDurationPeriod());
+        values.put("interest", model.getInterest());
+        values.put("interestAmount", model.getInterestAmount());
+        values.put("interestType", model.getInterestType());
+        values.put("totalAmount", model.getTotalAmount());
+        values.put("recordName", model.getRecordName());
+        values.put("cityName", model.getCityName());
+        values.put("remarks", model.getRemarks());
 
-        long isInserted = db.insert(TABLE_INTEREST_HISTORY, null, values);
+        long result = db.insert(TABLE_SAVE_INTEREST, null, values);
         db.close();
-        if (isInserted == -1) {
-            return false;
-        } else {
-            return true;
+
+        return result != -1;
+    }
+
+
+    //get the all history
+    public ArrayList<InterestModel> getHistory() {
+        ArrayList<InterestModel> arrayList = new ArrayList<>();
+
+        // select all query
+        String select_query= "SELECT *FROM " + TABLE_INTEREST_HISTORY;
+
+        SQLiteDatabase db = this .getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_query, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                InterestModel model = new InterestModel();
+                model.setId(cursor.getString(0));
+                model.setCurrentDate(cursor.getString(1));
+                model.setGivenDate(cursor.getString(2));
+                model.setReturnDate(cursor.getString(3));
+                model.setPrincipalAmount(cursor.getString(4));
+                model.setDurationPeriod(cursor.getString(5));
+                model.setInterest(cursor.getString(6));
+                model.setInterestAmount(cursor.getString(7));
+                model.setInterestType(cursor.getString(8));
+                model.setTotalAmount(cursor.getString(9));
+
+                Log.e("TAG", "getHistory: model " + model );
+           /*     noteModel.setID(cursor.getString(0));
+                noteModel.setTitle(cursor.getString(1));
+                noteModel.setDes(cursor.getString(2));
+           */     arrayList.add(model);
+            }while (cursor.moveToNext());
         }
+        return arrayList;
+    }
+
+    //get the all history
+    public ArrayList<InterestModel> getSaveRecord() {
+        ArrayList<InterestModel> arrayList = new ArrayList<>();
+
+        // select all query
+        String select_query= "SELECT *FROM " + TABLE_SAVE_INTEREST;
+
+        SQLiteDatabase db = this .getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_query, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                InterestModel model = new InterestModel();
+                model.setId(cursor.getString(0));
+                model.setCurrentDate(cursor.getString(1));
+                model.setGivenDate(cursor.getString(2));
+                model.setReturnDate(cursor.getString(3));
+                model.setPrincipalAmount(cursor.getString(4));
+                model.setDurationPeriod(cursor.getString(5));
+                model.setInterest(cursor.getString(6));
+                model.setInterestAmount(cursor.getString(7));
+                model.setInterestType(cursor.getString(8));
+                model.setTotalAmount(cursor.getString(9));
+                model.setRecordName(cursor.getString(10));
+                model.setCityName(cursor.getString(11));
+                model.setRemarks(cursor.getString(12));
+                Log.e("TAG", "getHistory: model " + model );
+           /*     noteModel.setID(cursor.getString(0));
+                noteModel.setTitle(cursor.getString(1));
+                noteModel.setDes(cursor.getString(2));
+           */     arrayList.add(model);
+            }while (cursor.moveToNext());
+        }
+        return arrayList;
+    }
+
+
+
+    // delete History
+    public void deleteHistory(int p){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM "+ TABLE_INTEREST_HISTORY + " WHERE " + "id" + " = "+p+"");
+        db.close();
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // this method is called to check if the table exists already.
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_INTEREST_HISTORY);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_INTERIM_PAYMENT);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SAVE_INTEREST);
+        onCreate(db);
     }
 }
