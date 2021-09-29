@@ -22,4 +22,17 @@
     <string name="savd_name">Saved Name</string>
     <string name="city_name">City Name</string>
     <string name="todo">TODO</string>
+    <string name="_45_000">45,000</string>
+    <string name="_50_000">50,000</string>
+    <string name="share">Share</string>
+    <string name="edit">Edit</string>
+    <string name="intrime_payments">Intrime Payments</string>
+    <string name="view_transaction">View Transaction</string>
+    <string name="name">Name</string>
+    <string name="totl_amount">Total Amount</string>
+    <string name="interim_pay_date">Interim Pay Date</string>
+    <string name="remarks">Remarks</string>
+    <string name="remaining_amount">Remaining Amount</string>
+    <string name="save">Save</string>
+    <string name="interim_payment">Interim Payment</string>
 </resources>

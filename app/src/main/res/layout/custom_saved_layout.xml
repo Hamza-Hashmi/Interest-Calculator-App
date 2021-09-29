@@ -10,13 +10,14 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:background="@drawable/custom_history_border"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/custon_saved_history_header"
-            android:padding="10dp">
+            android:padding="5dp">
 
             <TextView
                 android:id="@+id/tvSavedName"
@@ -104,7 +105,8 @@
                         android:layout_height="match_parent"
                         android:fontFamily="@font/roboto_regular"
                         android:paddingStart="30dp"
-                        android:text="@string/return_date" />
+                        android:text="@string/return_date"
+                        tools:ignore="RtlSymmetry" />
 
 
                 </LinearLayout>
@@ -224,7 +226,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="center"
-                    android:text="50,000"
+                    android:text="@string/_50_000"
                     android:textSize="16sp" />
 
                 <TextView
@@ -234,7 +236,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="center"
-                    android:text="45,000"
+                    android:text="@string/_45_000"
                     android:textSize="16sp" />
 
             </LinearLayout>

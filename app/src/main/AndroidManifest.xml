@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.InterestCalculator">
         <activity
+            android:name=".Activities.IntrimePayments"
+            android:exported="true" />
+        <activity
             android:name=".Activities.DashboardActivity"
             android:exported="true"
             android:screenOrientation="portrait" />

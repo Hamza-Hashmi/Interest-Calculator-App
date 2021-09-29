@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/share"
+        android:icon="@drawable/share_icon"
+        android:title="@string/share" />
+
+    <item
+        android:id="@+id/edt"
+        android:icon="@drawable/ic_baseline_create_24"
+        android:title="@string/edit" />
+    <item
+        android:id="@+id/intrimePayment"
+        android:icon="@drawable/ic_baseline_do_disturb_on_24"
+        android:title="@string/intrime_payments" />
+    <item
+        android:id="@+id/transection"
+        android:icon="@drawable/ic_baseline_assignment_24"
+        android:title="@string/view_transaction" />
+</menu>
