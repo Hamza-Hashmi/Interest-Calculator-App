@@ -5,7 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.interestcalculator.Adaptors.PagerAdapter;
+import com.example.interestcalculator.Adapter.PagerAdapter;
 import com.example.interestcalculator.databinding.ActivityIntrimePaymentsBinding;
 import com.google.android.material.tabs.TabLayout;
 

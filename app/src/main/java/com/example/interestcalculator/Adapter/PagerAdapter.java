@@ -1,4 +1,4 @@
-package com.example.interestcalculator.Adaptors;
+package com.example.interestcalculator.Adapter;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
