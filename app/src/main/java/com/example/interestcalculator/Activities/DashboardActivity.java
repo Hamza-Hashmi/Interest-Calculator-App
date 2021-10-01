@@ -17,6 +17,12 @@ public class DashboardActivity extends AppCompatActivity {
 
     ActivityDashboardBinding dashboardBinding;
 
+    public static String ID = "";
+    public static String NAME = "";
+    public static String PRINCIPAL_AMOUNT= "";
+    public static String TOTAL_AMOUNT = "";
+    public static String DURATION = "";
+
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {

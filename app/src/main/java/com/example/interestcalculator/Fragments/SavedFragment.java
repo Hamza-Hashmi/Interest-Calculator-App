@@ -33,7 +33,7 @@ ArrayList<InterestModel> savedList;
 
         savedList = new ArrayList<InterestModel>(dbHeleper.getSaveRecord());
 
-        adapter = new SavedAdapter(savedList);
+        adapter = new SavedAdapter(savedList,getContext());
         savedBinding.savedRv.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 

@@ -1,5 +1,7 @@
 package com.example.interestcalculator.Fragments;
 
+import static com.example.interestcalculator.widgets.Commons.getMonthFormat;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -62,7 +64,7 @@ public class HomeFragment extends Fragment {
                         break;
                     }
                     case R.id.interestCompountRadio:{
-                        interestType = "Compound";
+                        interestType = "Compound 12M";
                     }
                 }
             }
@@ -90,7 +92,11 @@ public class HomeFragment extends Fragment {
                     Log.e("TAG", "onCreateView: " + date2 );
                     long difference = Math.abs(date1.getTime() - date2.getTime());
                     duration = difference / (24 * 60 * 60 * 1000);
-                    calculateAndSaveSimpleInterest(pricipalAmout,interestAmountPerMonth);
+
+                        calculateAndSaveSimpleInterest(pricipalAmout,interestAmountPerMonth);
+                    /*else{
+                        calculateAndSaveCompoundInterest(pricipalAmout,interestAmountPerMonth);
+                    }*/
 
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -106,6 +112,41 @@ public class HomeFragment extends Fragment {
 
     }
 
+   /* private void calculateAndSaveCompoundInterest(String pricipalAmout, String interestAmountPerMonth) {
+        long amount =  Long.parseLong(pricipalAmout);
+        long interstAmount =Long.parseLong(interestAmountPerMonth);
+        double interest =amount * Math.pow(interstAmount + 1, mDuration);
+
+        double totalAmount = Long.parseLong(pricipalAmout) + interest;
+
+        try {
+
+            interestModel = new InterestModel(String.valueOf(System.currentTimeMillis()),startDate,endDate,pricipalAmout,getIntrestDuration(duration),String.valueOf(interest),interestAmountPerMonth,interestType,String.valueOf(totalAmount));
+            Log.e("TAG", "onCreateView: " + interestModel.toString() );
+            if (dbHeleper.addNewHistory(interestModel)){
+
+                homeBinding.bottomLayout.setVisibility(View.VISIBLE);
+                homeBinding.durationTv.setText("Duration: " + getIntrestDuration(duration));
+                homeBinding.intersetTv.setText("Interest: " +interest);
+                homeBinding.totalAmountTv.setText("Total Amount: " + totalAmount);
+                homeBinding.interestTypeTv.setText(interestType);
+
+                homeBinding.btnSave.setOnClickListener(view ->{
+
+                    showDialouge(pricipalAmout,interest,totalAmount,interestAmountPerMonth);
+
+                });
+
+
+            }else{
+                Toast.makeText(getContext(), "An Error Occured ", Toast.LENGTH_SHORT).show();
+            }
+
+        }catch (Exception e){
+            Log.e("TAG", "insert exception " + e.getMessage() );
+        }
+    }
+*/
     private void calculateAndSaveSimpleInterest(String pricipalAmout, String interestAmountPerMonth) {
 
          long amount =  Long.parseLong(pricipalAmout);
@@ -200,36 +241,6 @@ public class HomeFragment extends Fragment {
     }
 
 
-    private String getMonthFormat(int month) {
-        switch (month) {
-            case 1:
-                return "JAN";
-            case 2:
-                return "FEB";
-            case 3:
-                return "MAR";
-            case 4:
-                return "APR";
-            case 5:
-                return "MAY";
-            case 6:
-                return "JUN";
-            case 7:
-                return "JUL";
-            case 8:
-                return "AUG";
-            case 9:
-                return "SEP";
-            case 10:
-                return "OCT";
-            case 11:
-                return "NOV";
-            case 12:
-                return "DEC";
-            default:
-                return "JAN";
-        }
-    }
 
     private String getIntrestDuration(long duration){
 
@@ -282,7 +293,7 @@ public class HomeFragment extends Fragment {
 
 
 
-    private void showDialouge(String pricipalAmout, long interest, long totalAmount, String interestAmountPerMonth){
+    private void showDialouge(String pricipalAmout, double interest, double totalAmount, String interestAmountPerMonth){
         CustomSaveDialougeBinding mBinding;
 
         mBinding = CustomSaveDialougeBinding.inflate(getLayoutInflater());

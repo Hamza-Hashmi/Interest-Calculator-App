@@ -31,6 +31,7 @@
     <string name="name">Name</string>
     <string name="totl_amount">Total Amount</string>
     <string name="interim_pay_date">Interim Pay Date</string>
+    <string name="interim_pay_amount">Interim Pay Amount</string>
     <string name="remarks">Remarks</string>
     <string name="remaining_amount">Remaining Amount</string>
     <string name="save">Save</string>

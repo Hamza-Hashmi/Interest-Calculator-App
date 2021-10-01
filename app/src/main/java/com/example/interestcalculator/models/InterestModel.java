@@ -1,9 +1,9 @@
 package com.example.interestcalculator.models;
 
-public class InterestModel {
+public class InterestModel{
 
     String id,currentDate,givenDate,returnDate,principalAmount,durationPeriod,
-            interest,interestAmount,interestType,totalAmount,recordName,cityName,remarks,intrimePayment,remianingAmount;
+            interest,interestAmount,interestType,totalAmount,recordName,cityName,remarks,intrimePayment,remianingAmount,fid;
 
     public InterestModel() {
     }
@@ -43,17 +43,16 @@ public class InterestModel {
         this.remarks = remarks;
     }
 
-    public InterestModel(String currentDate, String principalAmount,
-                         String durationPeriod, String totalAmount, String intrimePayment,
-                         String remianingAmount) {
-        this.id = id;
+    public InterestModel(String fid,String currentDate, String principalAmount,
+                         String durationPeriod, String totalAmount, String intrimePayment) {
+        this.fid = fid;
         this.currentDate = currentDate;
         this.principalAmount = principalAmount;
         this.durationPeriod = durationPeriod;
         this.totalAmount = totalAmount;
         this.intrimePayment = intrimePayment;
-        this.remianingAmount = remianingAmount;
     }
+
 
     public String getId() {
         return id;
@@ -173,5 +172,13 @@ public class InterestModel {
 
     public void setRemianingAmount(String remianingAmount) {
         this.remianingAmount = remianingAmount;
+    }
+
+    public String getFid() {
+        return fid;
+    }
+
+    public void setFid(String fid) {
+        this.fid = fid;
     }
 }

@@ -168,13 +168,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:hint="@string/interim_pay_date">
+                    android:hint="@string/interim_pay_amount">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:ellipsize="middle"
-                        android:focusable="false"
                         android:fontFamily="@font/roboto_bold"
                         android:gravity="center_horizontal"
                         android:inputType="text"
@@ -247,6 +246,7 @@
                         android:layout_marginStart="10dp"
                         android:fontFamily="@font/roboto_mediun"
                         android:text="@string/remaining_amount"
+                        android:id="@+id/remaining_amount_tv"
                         android:textColor="@color/color_scandory" />
 
                 </LinearLayout>
