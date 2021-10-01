@@ -44,13 +44,14 @@ public class InterestModel{
     }
 
     public InterestModel(String fid,String currentDate, String principalAmount,
-                         String durationPeriod, String totalAmount, String intrimePayment) {
+                         String durationPeriod, String totalAmount, String intrimePayment,String remarks) {
         this.fid = fid;
         this.currentDate = currentDate;
         this.principalAmount = principalAmount;
         this.durationPeriod = durationPeriod;
         this.totalAmount = totalAmount;
         this.intrimePayment = intrimePayment;
+        this.remarks = remarks;
     }
 
 

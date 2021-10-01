@@ -28,6 +28,7 @@ import com.example.interestcalculator.databinding.FragmentAddPaymentBinding;
 import com.example.interestcalculator.models.InterestModel;
 
 import java.util.Calendar;
+import java.util.IllegalFormatCodePointException;
 
 public class AddPaymentFragment extends Fragment {
 
@@ -37,7 +38,7 @@ public class AddPaymentFragment extends Fragment {
     InterestModel model;
     DbHeleper dbHeleper;
     int mTotalAmount = 0;
-
+    String mDate,mAmount;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,8 +65,8 @@ public class AddPaymentFragment extends Fragment {
 
 
         binding.btnCalculate.setOnClickListener(view ->{
-              String mDate = binding.edtInterimPayDate.getEditText().getText().toString();
-              String mAmount = binding.edtPayingAmount.getEditText().getText().toString();
+               mDate = binding.edtInterimPayDate.getEditText().getText().toString();
+               mAmount = binding.edtPayingAmount.getEditText().getText().toString();
               if (TextUtils.isEmpty(mDate)){
                   Toast.makeText(getContext(), "please select date", Toast.LENGTH_SHORT).show();
                   return;
@@ -80,16 +81,27 @@ public class AddPaymentFragment extends Fragment {
               binding.remainingAmountTv.setText(""+mTotalAmount);
               binding.tvtotalAmount.setText(""+mTotalAmount);
 
+        });
 
 
-              model = new InterestModel(ID,String.valueOf(System.currentTimeMillis()),PRINCIPAL_AMOUNT,DURATION,String.valueOf(mTotalAmount),mAmount);
+        binding.btnSave.setOnClickListener(view -> {
+            String remark = "" ;
+            remark = binding.edtRemarks.getEditText().getText().toString();
 
-                if (dbHeleper.insertIntrimePayment(model)){
-                    Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(getContext(), "an error occured", Toast.LENGTH_SHORT).show();
+            String remaing = binding.remainingAmountTv.getText().toString();
 
-                }
+            if(TextUtils.isEmpty(remaing)){
+                Toast.makeText(getContext(), "Please Calculate interest", Toast.LENGTH_SHORT).show();
+            }
+            model = new InterestModel(ID,String.valueOf(System.currentTimeMillis()),PRINCIPAL_AMOUNT,DURATION,String.valueOf(mTotalAmount),mAmount,remark);
+
+            if (dbHeleper.insertIntrimePayment(model)){
+                Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getContext(), "an error occured", Toast.LENGTH_SHORT).show();
+
+            }
+
 
         });
 

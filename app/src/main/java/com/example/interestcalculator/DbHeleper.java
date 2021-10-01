@@ -43,7 +43,7 @@ public class DbHeleper extends SQLiteOpenHelper {
 
         db.execSQL("create Table interest_histroy(id INTEGER PRIMARY KEY AUTOINCREMENT,currentDate TEXT,givenDate TEXT,returnDate TEXT,principalAmount TEXT,durationPeriod TEXT,interest TEXT,interestAmount TEXT,interestType TEXT,totalAmount TEXT) ");
         db.execSQL("create Table save_interest(id INTEGER PRIMARY KEY AUTOINCREMENT,currentDate TEXT,givenDate TEXT,returnDate TEXT,principalAmount TEXT,durationPeriod TEXT,interest TEXT,interestAmount TEXT,interestType TEXT,totalAmount TEXT,recordName TEXT,cityName TEXT,remarks TEXT)");
-        db.execSQL("create Table interim_table(id INTEGER PRIMARY KEY AUTOINCREMENT,fid TEXT,principalAmount TEXT,totalAmount TEXT,currentDate TEXT,intrimePayment TEXT,durationPeriod TEXT)");
+        db.execSQL("create Table interim_table(id INTEGER PRIMARY KEY AUTOINCREMENT,fid TEXT,principalAmount TEXT,totalAmount TEXT,currentDate TEXT,intrimePayment TEXT,durationPeriod TEXT,remarks TEXT)");
     }
 
     // this method is use to add new course to our sqlite database.
@@ -69,6 +69,7 @@ public class DbHeleper extends SQLiteOpenHelper {
         values.put("interestAmount", model.getInterestAmount());
         values.put("interestType", model.getInterestType());
         values.put("totalAmount", model.getTotalAmount());
+
 
         // after adding all values we are passing
         // content values to our table.
@@ -121,6 +122,7 @@ public class DbHeleper extends SQLiteOpenHelper {
         values.put("intrimePayment",model.getIntrimePayment());
         values.put("intrimePayment",model.getIntrimePayment());
         values.put("durationPeriod",model.getDurationPeriod());
+        values.put("remarks",model.getRemarks());
 
 
 
