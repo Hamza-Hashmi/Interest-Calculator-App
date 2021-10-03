@@ -1,6 +1,5 @@
 package com.example.interestcalculator.Fragments;
 
-import static android.content.Context.MODE_APPEND;
 import static com.example.interestcalculator.Activities.DashboardActivity.DURATION;
 import static com.example.interestcalculator.Activities.DashboardActivity.ID;
 import static com.example.interestcalculator.Activities.DashboardActivity.NAME;
@@ -23,12 +22,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.interestcalculator.DbHeleper;
-import com.example.interestcalculator.R;
 import com.example.interestcalculator.databinding.FragmentAddPaymentBinding;
 import com.example.interestcalculator.models.InterestModel;
 
 import java.util.Calendar;
-import java.util.IllegalFormatCodePointException;
 
 public class AddPaymentFragment extends Fragment {
 
@@ -37,7 +34,9 @@ public class AddPaymentFragment extends Fragment {
     DatePickerDialog.OnDateSetListener mDateSetlistener;
     InterestModel model;
     DbHeleper dbHeleper;
-    int mTotalAmount = 0;
+    double mTotalAmount = 0;
+    double remainingAmount = 0;
+
     String mDate,mAmount;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,7 +51,7 @@ public class AddPaymentFragment extends Fragment {
         binding.tvPrincipleAmount.setText(PRINCIPAL_AMOUNT);
         binding.tvtotalAmount.setText(TOTAL_AMOUNT);
 
-        mTotalAmount = Integer.parseInt(TOTAL_AMOUNT);
+        mTotalAmount = Double.parseDouble(TOTAL_AMOUNT);
 
         initDate();
 
@@ -76,10 +75,10 @@ public class AddPaymentFragment extends Fragment {
                   return;
               }
 
-              mTotalAmount = mTotalAmount - Integer.parseInt(mAmount);
+            remainingAmount = mTotalAmount - Integer.parseInt(mAmount);
 
-              binding.remainingAmountTv.setText(""+mTotalAmount);
-              binding.tvtotalAmount.setText(""+mTotalAmount);
+              binding.remainingAmountTv.setText(""+remainingAmount);
+              binding.tvtotalAmount.setText(""+remainingAmount);
 
         });
 
@@ -88,21 +87,23 @@ public class AddPaymentFragment extends Fragment {
             String remark = "" ;
             remark = binding.edtRemarks.getEditText().getText().toString();
 
-            String remaing = binding.remainingAmountTv.getText().toString();
+            String remaining = binding.remainingAmountTv.getText().toString();
 
-            if(TextUtils.isEmpty(remaing)){
+            if(TextUtils.isEmpty(remaining)){
                 Toast.makeText(getContext(), "Please Calculate interest", Toast.LENGTH_SHORT).show();
             }
-            model = new InterestModel(ID,String.valueOf(System.currentTimeMillis()),PRINCIPAL_AMOUNT,DURATION,String.valueOf(mTotalAmount),mAmount,remark);
+            model = new InterestModel(ID,String.valueOf(System.currentTimeMillis()),PRINCIPAL_AMOUNT,DURATION,String.valueOf(mTotalAmount),mAmount,remark,String.valueOf(remainingAmount));
 
             if (dbHeleper.insertIntrimePayment(model)){
-                Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
+                 if (dbHeleper.updateTotalAmount(String.valueOf(remainingAmount),ID)){
+                     Toast.makeText(requireContext(), "Record Stored Successfully", Toast.LENGTH_SHORT).show();
+                 }
+                 else{
+                     Toast.makeText(requireContext(), "Update Error", Toast.LENGTH_SHORT).show();
+                 }
             }else{
                 Toast.makeText(getContext(), "an error occured", Toast.LENGTH_SHORT).show();
-
             }
-
-
         });
 
         return binding.getRoot();

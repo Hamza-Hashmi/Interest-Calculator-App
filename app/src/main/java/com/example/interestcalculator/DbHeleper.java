@@ -43,7 +43,7 @@ public class DbHeleper extends SQLiteOpenHelper {
 
         db.execSQL("create Table interest_histroy(id INTEGER PRIMARY KEY AUTOINCREMENT,currentDate TEXT,givenDate TEXT,returnDate TEXT,principalAmount TEXT,durationPeriod TEXT,interest TEXT,interestAmount TEXT,interestType TEXT,totalAmount TEXT) ");
         db.execSQL("create Table save_interest(id INTEGER PRIMARY KEY AUTOINCREMENT,currentDate TEXT,givenDate TEXT,returnDate TEXT,principalAmount TEXT,durationPeriod TEXT,interest TEXT,interestAmount TEXT,interestType TEXT,totalAmount TEXT,recordName TEXT,cityName TEXT,remarks TEXT)");
-        db.execSQL("create Table interim_table(id INTEGER PRIMARY KEY AUTOINCREMENT,fid TEXT,principalAmount TEXT,totalAmount TEXT,currentDate TEXT,intrimePayment TEXT,durationPeriod TEXT,remarks TEXT)");
+        db.execSQL("create Table interim_table(id INTEGER PRIMARY KEY AUTOINCREMENT,fid TEXT,principalAmount TEXT,totalAmount TEXT,currentDate TEXT,intrimePayment TEXT,durationPeriod TEXT,remarks TEXT,remaingingAmount TEXT)");
     }
 
     // this method is use to add new course to our sqlite database.
@@ -203,6 +203,37 @@ public class DbHeleper extends SQLiteOpenHelper {
         return arrayList;
     }
 
+    //get intrimePaymentHistory
+    public ArrayList<InterestModel> getIntrimeHistory(String fid) {
+        ArrayList<InterestModel> arrayList = new ArrayList<>();
+
+
+        SQLiteDatabase db = this .getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_INTERIM_PAYMENT + " where fid = '" +fid + "'" , null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                InterestModel model = new InterestModel();
+                model.setId(cursor.getString(0));
+                model.setFid(cursor.getString(1));
+                model.setPrincipalAmount(cursor.getString(2));
+                model.setTotalAmount(cursor.getString(3));
+                model.setCurrentDate(cursor.getString(4));
+                model.setIntrimePayment(cursor.getString(5));
+                model.setDurationPeriod(cursor.getString(6));
+                model.setRemarks(cursor.getString(7));
+                model.setRemianingAmount(cursor.getString(8));
+
+                Log.e("TAG", "getHistory: model " + model );
+           /*     noteModel.setID(cursor.getString(0));
+                noteModel.setTitle(cursor.getString(1));
+                noteModel.setDes(cursor.getString(2));
+           */     arrayList.add(model);
+            }while (cursor.moveToNext());
+        }
+        return arrayList;
+    }
 
 
     // delete History
@@ -210,6 +241,20 @@ public class DbHeleper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM "+ TABLE_INTEREST_HISTORY + " WHERE " + "id" + " = "+p+"");
         db.close();
+    }
+
+    // update savedTable total amount
+    public boolean updateTotalAmount(String totalAmount,String id){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("totalAmount", totalAmount);
+
+       long result = db.update(TABLE_SAVE_INTEREST,values,"id = ?",new String[]{id});
+
+        return result != -1;
     }
 
     @Override

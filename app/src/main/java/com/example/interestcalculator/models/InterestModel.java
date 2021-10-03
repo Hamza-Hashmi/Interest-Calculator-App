@@ -44,7 +44,7 @@ public class InterestModel{
     }
 
     public InterestModel(String fid,String currentDate, String principalAmount,
-                         String durationPeriod, String totalAmount, String intrimePayment,String remarks) {
+                         String durationPeriod, String totalAmount, String intrimePayment,String remarks,String remianingAmount) {
         this.fid = fid;
         this.currentDate = currentDate;
         this.principalAmount = principalAmount;
@@ -52,6 +52,7 @@ public class InterestModel{
         this.totalAmount = totalAmount;
         this.intrimePayment = intrimePayment;
         this.remarks = remarks;
+        this.remianingAmount = remianingAmount;
     }
 
 

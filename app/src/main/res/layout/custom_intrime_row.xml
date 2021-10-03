@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:paddingBottom="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/custom_history_border">
+
+     <TextView
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:textColor="@color/white"
+         android:background="@color/teal_200"
+         android:text="Principal Amount"
+         android:padding="8dp"
+         app:layout_constraintTop_toTopOf="parent"
+         android:gravity="center"
+         android:id="@+id/principalAmountTv"/>
+
+
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="15dp"
+         android:id="@+id/ll"
+         app:layout_constraintTop_toBottomOf="@id/principalAmountTv"
+         android:weightSum="2">
+
+         <TextView
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_weight="1"
+             android:textAlignment="textEnd"
+             android:text="Total Amount "/>
+
+         <TextView
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:text="10000"
+             android:layout_weight="1"
+             android:id="@+id/totalAmountTv"/>
+
+     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lll"
+        app:layout_constraintTop_toBottomOf="@id/ll"
+        android:weightSum="2">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="textEnd"
+            android:text="Intrime Payment "/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="500"
+                android:id="@+id/tvIntrimePayment"/>
+
+            <View
+                android:layout_width="100dp"
+                android:layout_height="1dp"
+                android:background="@color/edtborder"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:id="@+id/llll"
+        app:layout_constraintTop_toBottomOf="@id/lll"
+        android:weightSum="2">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="textEnd"
+            android:text="Remaining Amount "/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="10000"
+            android:layout_weight="1"
+            android:id="@+id/tvRemainingAmount"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:id="@+id/lllll"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintTop_toBottomOf="@id/llll"
+        android:weightSum="2">
+
+        <TextView
+            android:layout_width="0dp"
+            android:drawablePadding="10dp"
+            app:drawableStartCompat="@drawable/calander_icon"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Intrime Pay Date "/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Duration"
+            android:drawablePadding="10dp"
+            android:drawableStart="@drawable/duration_icon"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintTop_toBottomOf="@id/lllll"
+        android:weightSum="2">
+
+        <TextView
+            android:layout_width="0dp"
+            android:drawablePadding="10dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="13 aug 2012"
+            android:id="@+id/tvSubmitDate"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="5 months"
+            android:layout_marginLeft="10dp"
+            android:drawablePadding="10dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
