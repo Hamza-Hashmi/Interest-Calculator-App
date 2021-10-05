@@ -112,41 +112,7 @@ public class HomeFragment extends Fragment {
 
     }
 
-   /* private void calculateAndSaveCompoundInterest(String pricipalAmout, String interestAmountPerMonth) {
-        long amount =  Long.parseLong(pricipalAmout);
-        long interstAmount =Long.parseLong(interestAmountPerMonth);
-        double interest =amount * Math.pow(interstAmount + 1, mDuration);
 
-        double totalAmount = Long.parseLong(pricipalAmout) + interest;
-
-        try {
-
-            interestModel = new InterestModel(String.valueOf(System.currentTimeMillis()),startDate,endDate,pricipalAmout,getIntrestDuration(duration),String.valueOf(interest),interestAmountPerMonth,interestType,String.valueOf(totalAmount));
-            Log.e("TAG", "onCreateView: " + interestModel.toString() );
-            if (dbHeleper.addNewHistory(interestModel)){
-
-                homeBinding.bottomLayout.setVisibility(View.VISIBLE);
-                homeBinding.durationTv.setText("Duration: " + getIntrestDuration(duration));
-                homeBinding.intersetTv.setText("Interest: " +interest);
-                homeBinding.totalAmountTv.setText("Total Amount: " + totalAmount);
-                homeBinding.interestTypeTv.setText(interestType);
-
-                homeBinding.btnSave.setOnClickListener(view ->{
-
-                    showDialouge(pricipalAmout,interest,totalAmount,interestAmountPerMonth);
-
-                });
-
-
-            }else{
-                Toast.makeText(getContext(), "An Error Occured ", Toast.LENGTH_SHORT).show();
-            }
-
-        }catch (Exception e){
-            Log.e("TAG", "insert exception " + e.getMessage() );
-        }
-    }
-*/
     private void calculateAndSaveSimpleInterest(String pricipalAmout, String interestAmountPerMonth) {
 
          long amount =  Long.parseLong(pricipalAmout);

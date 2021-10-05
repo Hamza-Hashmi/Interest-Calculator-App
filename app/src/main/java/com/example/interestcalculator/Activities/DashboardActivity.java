@@ -1,6 +1,7 @@
 package com.example.interestcalculator.Activities;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import com.example.interestcalculator.Fragments.SavedFragment;
 import com.example.interestcalculator.Fragments.SettingsFragment;
 import com.example.interestcalculator.R;
 import com.example.interestcalculator.databinding.ActivityDashboardBinding;
+import com.example.interestcalculator.widgets.ExternalStoragePermissions;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -32,6 +34,10 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(dashboardBinding.getRoot());
 
         setSupportActionBar(dashboardBinding.DBappbar);
+        if(Build.VERSION.SDK_INT >= 23) {
+            ExternalStoragePermissions.verifyStoragePermissions(this);
+        }
+
         if (savedInstanceState == null) {
             dashboardBinding.DBappbar.setTitle(R.string.home);
             HomeFragment homeFragment = new HomeFragment();

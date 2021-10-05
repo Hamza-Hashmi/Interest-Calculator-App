@@ -11,15 +11,19 @@ import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.interestcalculator.Activities.DashboardActivity;
 import com.example.interestcalculator.Activities.IntrimePayments;
+import com.example.interestcalculator.DbHeleper;
 import com.example.interestcalculator.Fragments.AddPaymentFragment;
+import com.example.interestcalculator.Fragments.UpdateFragment;
 import com.example.interestcalculator.R;
 import com.example.interestcalculator.databinding.CustomSavedLayoutBinding;
 import com.example.interestcalculator.models.InterestModel;
@@ -30,10 +34,12 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SaveViewHold
 
     ArrayList<InterestModel> list;
     Context context;
+    DbHeleper dbHeleper;
 
     public SavedAdapter(ArrayList<InterestModel> list, Context context) {
         this.list = list;
         this.context = context;
+        dbHeleper = new DbHeleper(context);
     }
 
     @NonNull
@@ -73,7 +79,24 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SaveViewHold
                                shareData(model);
                                 return true;
                             case R.id.edt:
-                                Log.e("TAG", "onMenuItemSelected: edit");
+                                /*  if (dbHeleper.checkRecordExist(model.getId())){
+                                      Toast.makeText(context, "Record have intrime payment", Toast.LENGTH_SHORT).show();
+                                      return false;
+                                  }else{*/
+                                      Bundle bundle = new Bundle();
+                                      bundle.putString("id",model.getId());
+                                      bundle.putString("pm",model.getPrincipalAmount());
+                                      bundle.putString("interest",model.getInterestAmount());
+                                      bundle.putString("gd",model.getGivenDate());
+                                      bundle.putString("rd",model.getReturnDate());
+
+                                      AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                                      UpdateFragment uf = new UpdateFragment();
+                                      uf.setArguments(bundle);
+
+                                      activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, uf).commit();
+
+                                  //}
                                 return true;
 
                             case R.id.intrimePayment:
@@ -102,10 +125,11 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SaveViewHold
                             default:
                                 return false;
                         }
+
                     }
 
                     @Override
-                    public void onMenuModeChange(MenuBuilder menu) {}
+                    public void onMenuModeChange(@NonNull MenuBuilder menu) {}
                 });
 
 

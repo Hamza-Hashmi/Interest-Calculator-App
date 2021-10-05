@@ -83,6 +83,26 @@ public class DbHeleper extends SQLiteOpenHelper {
     }
 
 
+    public boolean updateHistory(String id, InterestModel model){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("currentDate", model.getCurrentDate());
+        values.put("givenDate", model.getGivenDate());
+        values.put("returnDate", model.getReturnDate());
+        values.put("principalAmount", model.getPrincipalAmount());
+        values.put("durationPeriod", model.getDurationPeriod());
+        values.put("interest", model.getInterest());
+        values.put("interestAmount", model.getInterestAmount());
+        values.put("interestType", model.getInterestType());
+        values.put("totalAmount", model.getTotalAmount());
+
+        long result = db.update(TABLE_INTEREST_HISTORY,values,"id = ?",new String[]{id});
+
+        return result != -1;
+
+    }
+
     // save interest
     public boolean saveInterest(InterestModel model) {
 
@@ -108,6 +128,32 @@ public class DbHeleper extends SQLiteOpenHelper {
 
         return result != -1;
     }
+
+    public boolean updateInterst(String id , InterestModel model) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("currentDate", model.getCurrentDate());
+        values.put("givenDate", model.getGivenDate());
+        values.put("returnDate", model.getReturnDate());
+        values.put("principalAmount", model.getPrincipalAmount());
+        values.put("durationPeriod", model.getDurationPeriod());
+        values.put("interest", model.getInterest());
+        values.put("interestAmount", model.getInterestAmount());
+        values.put("interestType", model.getInterestType());
+        values.put("totalAmount", model.getTotalAmount());
+        values.put("recordName", model.getRecordName());
+        values.put("cityName", model.getCityName());
+        values.put("remarks", model.getRemarks());
+
+        long result = db.update(TABLE_SAVE_INTEREST,values,"id = ?",new String[]{id});
+        db.close();
+
+        return result != -1;
+    }
+
 
     public boolean insertIntrimePayment(InterestModel model){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -255,6 +301,17 @@ public class DbHeleper extends SQLiteOpenHelper {
        long result = db.update(TABLE_SAVE_INTEREST,values,"id = ?",new String[]{id});
 
         return result != -1;
+    }
+
+    public boolean checkRecordExist(String fid){
+        SQLiteDatabase db = this .getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_INTERIM_PAYMENT + " where fid = '" +fid + "'" , null);
+        if (cursor.getCount()<0){
+            db.close();
+            return false;
+        }
+        db.close();
+        return true;
     }
 
     @Override
