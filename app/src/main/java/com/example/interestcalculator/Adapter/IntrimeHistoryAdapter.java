@@ -2,11 +2,13 @@ package com.example.interestcalculator.Adapter;
 
 import android.content.Context;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.MenuView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.interestcalculator.databinding.CustomIntrimeRowBinding;
@@ -18,8 +20,9 @@ import java.util.Locale;
 
 public class IntrimeHistoryAdapter extends RecyclerView.Adapter<IntrimeHistoryAdapter.MyViewHolder>{
 
-  ArrayList<InterestModel> list;
+  public static ArrayList<InterestModel> list;
   Context context;
+  static ArrayList<ConstraintLayout> mList;
 
     public IntrimeHistoryAdapter(ArrayList<InterestModel> list, Context context) {
         this.list = list;
@@ -38,7 +41,11 @@ public class IntrimeHistoryAdapter extends RecyclerView.Adapter<IntrimeHistoryAd
         holder.binding.principalAmountTv.setText("Principal Amount "+model.getPrincipalAmount());
         holder.binding.totalAmountTv.setText(model.getTotalAmount());
         holder.binding.tvIntrimePayment.setText(model.getIntrimePayment());
+
+        Log.e("TAG", "onBindViewHolder: " +model.getIntrimePayment());
         holder.binding.tvRemainingAmount.setText(model.getRemianingAmount());
+
+
 
         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
         cal.setTimeInMillis(Long.parseLong(model.getCurrentDate()));
@@ -62,4 +69,6 @@ public class IntrimeHistoryAdapter extends RecyclerView.Adapter<IntrimeHistoryAd
             this.binding = itemView;
         }
     }
+
+
 }

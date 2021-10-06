@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.example.interestcalculator.Adapter.HistoryAdapter;
@@ -38,6 +39,8 @@ public class HistoryFragment extends Fragment {
         adapter = new HistoryAdapter(intersetHistoryList,requireContext());
         hiistoryBinding.historyRv.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+
+
 
         return hiistoryBinding.getRoot();
     }

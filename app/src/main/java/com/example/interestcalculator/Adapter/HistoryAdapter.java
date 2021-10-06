@@ -61,6 +61,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             list.remove(position);
             notifyDataSetChanged();
         });
+
+
     }
 
     @Override

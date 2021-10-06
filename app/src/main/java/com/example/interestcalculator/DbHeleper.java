@@ -279,7 +279,7 @@ public class DbHeleper extends SQLiteOpenHelper {
             }while (cursor.moveToNext());
         }
         return arrayList;
-    }
+     }
 
 
     // delete History

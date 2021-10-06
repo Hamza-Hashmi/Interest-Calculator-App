@@ -80,6 +80,8 @@ public class AddPaymentFragment extends Fragment {
               binding.remainingAmountTv.setText(""+remainingAmount);
               binding.tvtotalAmount.setText(""+remainingAmount);
 
+
+
         });
 
 
@@ -92,6 +94,7 @@ public class AddPaymentFragment extends Fragment {
             if(TextUtils.isEmpty(remaining)){
                 Toast.makeText(getContext(), "Please Calculate interest", Toast.LENGTH_SHORT).show();
             }
+            Log.e("TAG", "onCreateView: " + remainingAmount);
             model = new InterestModel(ID,String.valueOf(System.currentTimeMillis()),PRINCIPAL_AMOUNT,DURATION,String.valueOf(mTotalAmount),mAmount,remark,String.valueOf(remainingAmount));
 
             if (dbHeleper.insertIntrimePayment(model)){
