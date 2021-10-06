@@ -25,6 +25,7 @@ import com.example.interestcalculator.R;
 import com.example.interestcalculator.databinding.CustomSaveDialougeBinding;
 import com.example.interestcalculator.databinding.FragmentHomeBinding;
 import com.example.interestcalculator.models.InterestModel;
+import com.example.interestcalculator.widgets.SharedHelper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -50,6 +51,12 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         homeBinding = FragmentHomeBinding.inflate(inflater, container, false);
 
+        if (SharedHelper.getKey(requireContext(),"isCompound").equalsIgnoreCase("true")){
+            homeBinding.interestCompountRadio.setChecked(true);
+            interestType = "Compound 12M";
+            homeBinding.interestSimpleRadio.setChecked(false);
+        }
+
         initGivenDate();
         initReturnDate();
 
@@ -60,10 +67,13 @@ public class HomeFragment extends Fragment {
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i){
                     case R.id.interestSimpleRadio: {
+                        SharedHelper.putKey(requireContext(),"isCompound","false");
                         interestType = "Simple";
                         break;
                     }
                     case R.id.interestCompountRadio:{
+                        SharedHelper.putKey(requireContext(),"isCompound","true");
+
                         interestType = "Compound 12M";
                     }
                 }

@@ -37,4 +37,17 @@
     <string name="save">Save</string>
     <string name="interim_payment">Interim Payment</string>
     <string name="total_amunt">Total Amount</string>
+    <string name="interest_rate_by_percentage">Interest rate by percentage</string>
+    <string name="compound_interest_period_in_months">Compound interest period (in months)</string>
+    <string name="interest_rate_consider_per_month_in_rupees">Interest rate consider per month in rupees</string>
+    <string name="allow_fractions">Allow Fractions</string>
+    <string name="calculation_rounds_the_value">Calculation rounds the value</string>
+    <string name="language">Language</string>
+    <string name="share_app_with_your_friends">Share app with your friends</string>
+    <string name="share_app">Share App</string>
+    <string name="rate_app">Rate App</string>
+    <string name="interest_rate_considered_as_annum">Interest rate considered as % per annum</string>
+    <string name="allow_fraction">Allow Fraction</string>
+    <string name="last_year_month_amp_days_compound_exemptions"><![CDATA[Last Year Month & Days Compound Exemptions]]></string>
+    <string name="compound_interest_will_not_be">Compound Interest will not be calculated only for last year months and days</string>
 </resources>
