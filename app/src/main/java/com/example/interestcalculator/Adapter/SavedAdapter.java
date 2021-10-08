@@ -79,10 +79,6 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SaveViewHold
                                shareData(model);
                                 return true;
                             case R.id.edt:
-                                /*  if (dbHeleper.checkRecordExist(model.getId())){
-                                      Toast.makeText(context, "Record have intrime payment", Toast.LENGTH_SHORT).show();
-                                      return false;
-                                  }else{*/
                                       Bundle bundle = new Bundle();
                                       bundle.putString("id",model.getId());
                                       bundle.putString("pm",model.getPrincipalAmount());
@@ -96,8 +92,7 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SaveViewHold
 
                                       activity.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, uf).commit();
 
-                                  //}
-                                return true;
+                                      return true;
 
                             case R.id.intrimePayment:
 
@@ -107,13 +102,6 @@ public class SavedAdapter extends RecyclerView.Adapter<SavedAdapter.SaveViewHold
                                 PRINCIPAL_AMOUNT = model.getPrincipalAmount();
                                 DURATION = model.getDurationPeriod();
 
-                                /*
-                                Bundle bundle = new Bundle();
-                                String id = model.getId();
-                                bundle.putString("id",id);
-                                AddPaymentFragment APF = new AddPaymentFragment();
-                                APF.setArguments(bundle);
-*/
                                 context.startActivity(new Intent(context, IntrimePayments.class));
                                 Log.e("TAG", "onMenuItemSelected: intrimePayment");
                                 return true;
