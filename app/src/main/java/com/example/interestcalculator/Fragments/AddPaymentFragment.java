@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.example.interestcalculator.DbHeleper;
@@ -114,25 +115,22 @@ public class AddPaymentFragment extends Fragment {
 
     private void initDate() {
         binding.edtInterimPayDate.getEditText().setOnClickListener(v -> {
-            Calendar cal = Calendar.getInstance();
-            int year = cal.get(Calendar.YEAR);
-            int month = cal.get(Calendar.MONTH);
-            int day = cal.get(Calendar.DAY_OF_MONTH);
+            Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
 
-            month = month + 1;
-            DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                    mDateSetlistener, day, month, year);
-            datePickerDialog.setTitle("Given Date");
-            datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_MinWidth, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                    monthOfYear++;
+                    binding.edtInterimPayDate.getEditText().setText(dayOfMonth + "-" + monthOfYear + "(" + getMonthFormat(monthOfYear) + ")" + "-" + year);
+                }
+            }, year, month, day);
+            datePickerDialog.setTitle("Pick Date");
             datePickerDialog.show();
         });
 
-        mDateSetlistener = (view, year, month, dayOfMonth) -> {
-
-            month++;
-
-            binding.edtInterimPayDate.getEditText().setText(dayOfMonth + "-" + month + "(" + getMonthFormat(month + 1) + ")" + "-" + year);
-
-        };
     }
 }
