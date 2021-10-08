@@ -5,6 +5,8 @@ public class Commons {
     public static String PERCENT_SWITCH = "PERCENT_SWITCH";
     public static String ALLOW_FRACTION = "ALLOW_FRACTION";
     public static String COMPOUND_EXEMPTIONS = "COMPOUND_EXEMPTIONS";
+    public static String COMPOUND_MONTHS = "COMPOUND_MONTHS";
+    public static String LANGUAGE = "LANGUAGE";
 
    public static String getMonthFormat(int month) {
         switch (month) {

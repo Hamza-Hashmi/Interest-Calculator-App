@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Language"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/tv"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="Kannada"
+        android:textSize="16sp"
+        android:id="@+id/btnKannada"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/btnKannada"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="Hindi"
+        android:textSize="16sp"
+        android:id="@+id/btnHindi"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/btnHindi"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="Malayalam"
+        android:textSize="16sp"
+        android:id="@+id/btnMalaylam"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/btnMalaylam"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:textSize="16sp"
+        android:text="Telugu"
+        android:id="@+id/btnTelugu"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
