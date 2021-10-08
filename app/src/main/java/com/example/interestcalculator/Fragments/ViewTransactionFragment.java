@@ -1,29 +1,11 @@
 package com.example.interestcalculator.Fragments;
 
-import static com.example.interestcalculator.Activities.DashboardActivity.DURATION;
 import static com.example.interestcalculator.Activities.DashboardActivity.ID;
-import static com.example.interestcalculator.Activities.DashboardActivity.NAME;
-import static com.example.interestcalculator.Activities.DashboardActivity.PRINCIPAL_AMOUNT;
-import static com.example.interestcalculator.Activities.DashboardActivity.TOTAL_AMOUNT;
-import static com.example.interestcalculator.Adapter.IntrimeHistoryAdapter.list;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.appcompat.view.menu.MenuPopupHelper;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-
 import android.os.Environment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,30 +14,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.interestcalculator.Activities.IntrimePayments;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.view.menu.MenuPopupHelper;
+import androidx.fragment.app.Fragment;
+
 import com.example.interestcalculator.Adapter.IntrimeHistoryAdapter;
 import com.example.interestcalculator.DbHeleper;
 import com.example.interestcalculator.R;
 import com.example.interestcalculator.databinding.FragmentViewTransactionBinding;
 import com.example.interestcalculator.models.InterestModel;
-import com.itextpdf.kernel.geom.PageSize;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.Table;
-import com.itextpdf.layout.property.TextAlignment;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
-
-import org.w3c.dom.Document;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
+
 
 public class ViewTransactionFragment extends Fragment {
 
@@ -102,7 +85,7 @@ public class ViewTransactionFragment extends Fragment {
 
 
         binding.btnMenu.setOnClickListener(view -> {
-            @SuppressLint("RestrictedApi") MenuBuilder menuBuilder =new MenuBuilder(getContext());
+            @SuppressLint("RestrictedApi") MenuBuilder menuBuilder = new MenuBuilder(getContext());
             MenuInflater minflater = new MenuInflater(getContext());
             minflater.inflate(R.menu.pdf_menu, menuBuilder);
             @SuppressLint("RestrictedApi") MenuPopupHelper optionsMenu = new MenuPopupHelper(getContext(), menuBuilder, view);
@@ -129,7 +112,8 @@ public class ViewTransactionFragment extends Fragment {
                 }
 
                 @Override
-                public void onMenuModeChange(@NonNull MenuBuilder menu) {}
+                public void onMenuModeChange(@NonNull MenuBuilder menu) {
+                }
             });
 
 
@@ -172,60 +156,114 @@ public class ViewTransactionFragment extends Fragment {
     }
 */
     public void createPDF() throws FileNotFoundException {
+
+        Font font = new Font(Font.FontFamily.TIMES_ROMAN, 16.0f);
+        Document document = new Document();
+        String format = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Long.valueOf(System.currentTimeMillis()));
+        String str = Environment.getExternalStorageDirectory() + "/" + format + ".pdf";
         try {
-            File pdfFile = Environment.getExternalStorageDirectory();
-            Log.e("TAG", "createPDF: " + pdfFile );
-            File file = new File(pdfFile.getPath(), System.currentTimeMillis() + "INterim.pdf");
-
-            PdfWriter pdfWriter = new PdfWriter(file);
-            PdfDocument pdfDocument = new PdfDocument(pdfWriter);
-            com.itextpdf.layout.Document document = new com.itextpdf.layout.Document(pdfDocument);
-
-            pdfDocument.setDefaultPageSize(PageSize.A4);
-            float columWidth[] = {140, 140, 140, 140};
-            Paragraph titile = new Paragraph("Interim Payment")
-                    .setBold().setFontSize(24).setTextAlignment(TextAlignment.CENTER);
-
-            Paragraph subHeading = new Paragraph("PDF Created in Interest Calculator App")
-                    .setFontSize(14).setTextAlignment(TextAlignment.CENTER);
-
-
-            Table table = new Table(columWidth);
-
-            table.addCell(new Cell().add(new Paragraph("Serial No")));
-            table.addCell(new Cell().add(new Paragraph("Name")));
-            table.addCell(new Cell().add(new Paragraph("Given and Return Date")));
-            table.addCell(new Cell().add(new Paragraph("Duration")));
-            table.addCell(new Cell().add(new Paragraph("Interest Rate")));
-            table.addCell(new Cell().add(new Paragraph("Interest")));
-            table.addCell(new Cell().add(new Paragraph("Interest Type")));
-            table.addCell(new Cell().add(new Paragraph("Total Amount")));
-
-            int serialNO = 0;
-
-            for (InterestModel model : list) {
-                serialNO++;
-                table.addCell(new Cell().add(new Paragraph(String.valueOf(serialNO))));
-                table.addCell(new Cell().add(new Paragraph(model.getCityName())));
-                table.addCell(new Cell().add(new Paragraph(model.getGivenDate() + "," + model.getReturnDate())));
-                table.addCell(new Cell().add(new Paragraph(model.getDurationPeriod())));
-                table.addCell(new Cell().add(new Paragraph(model.getInterest())));
-                table.addCell(new Cell().add(new Paragraph(model.getInterestAmount())));
-                table.addCell(new Cell().add(new Paragraph(model.getInterestType())));
-                table.addCell(new Cell().add(new Paragraph(model.getTotalAmount())));
-            }
-
-            document.add(titile);
-            document.add(subHeading);
-            document.add(table);
-
-            Toast.makeText(getContext(), file.getAbsolutePath(), Toast.LENGTH_SHORT).show();
-
-
+            PdfWriter.getInstance(document, new FileOutputStream(str));
+            document.open();
+            Paragraph titleParagraph = new Paragraph("Interest Calculator App");
+            document.add(titleParagraph);
+            document.add(new Paragraph("This PDF is created through Through Interest Calculator App \n", new Font(Font.FontFamily.TIMES_ROMAN, 18.0f, 1)));
+            document.add(getExpenses());
+            document.addAuthor("Interset calculator");
+            document.close();
+            Toast.makeText(getContext(), format + ".pdf\nis saved to\n" + str, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Log.e("TAG", "createPDF:exception " + e.getMessage() );
-
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+        Toast.makeText(getContext(), "working ", Toast.LENGTH_SHORT).show();
 
     }
+
+    public PdfPTable getExpenses() {
+        PdfPTable pdfPTable = new PdfPTable(6);
+
+        pdfPTable.addCell(getpdfcell("Serial no"));
+        pdfPTable.addCell(getpdfcell("Intrime Payment"));
+        pdfPTable.addCell(getpdfcell("Given date"));
+        pdfPTable.addCell(getpdfcell("Duration Period"));
+        pdfPTable.addCell(getpdfcell("Remaining Amount"));
+        pdfPTable.addCell(getpdfcell("Principal Amount"));
+
+        pdfPTable.setHeaderRows(1);
+
+        for (InterestModel model : com.example.interestcalculator.Adapter.IntrimeHistoryAdapter.list) {
+            pdfPTable.addCell("serialNO");
+            pdfPTable.addCell(model.getIntrimePayment());
+            pdfPTable.addCell(model.getGivenDate());
+            pdfPTable.addCell(model.getDurationPeriod());
+            pdfPTable.addCell(model.getRemianingAmount());
+            pdfPTable.addCell(model.getPrincipalAmount());
+        }
+
+        return pdfPTable;
+    }
+
+    public PdfPCell getpdfcell(String name) {
+        PdfPCell pdfPCell2 = new PdfPCell(new Phrase(name));
+        pdfPCell2.setHorizontalAlignment(1);
+        return pdfPCell2;
+    }
 }
+
+
+//        try {
+//            File pdfFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+//            Log.e("TAG", "createPDF: " + pdfFile);
+//            File file = new File(pdfFile, System.currentTimeMillis() + "Interim.pdf");
+//
+////            PdfWriter pdfWriter = new PdfWriter(file);
+////            PdfDocument pdfDocument = new PdfDocument(pdfWriter);
+////            Document document = new Document(pdfDocument);
+////
+////
+////            pdfDocument.setDefaultPageSize(PageSize.A4);
+////            float columWidth[] = {120, 120, 120, 120, 120, 120, 120, 120};
+////            Paragraph titile = new Paragraph("Interim Payment")
+////                    .setBold().setFontSize(24).setTextAlignment(TextAlignment.CENTER);
+////
+////            Paragraph subHeading = new Paragraph("PDF Created in Interest Calculator App")
+////                    .setFontSize(14).setTextAlignment(TextAlignment.CENTER);
+//
+//
+////            Table table = new Table(columWidth);
+//
+////            table.addCell(new Cell().add(new Paragraph("S No").setFontSize(12)));
+////            table.addCell(new Cell().add(new Paragraph("Intrime Payment").setFontSize(12)));
+////            table.addCell(new Cell().add(new Paragraph("Pay Date").setFontSize(12)));
+////            table.addCell(new Cell().add(new Paragraph("Duration").setFontSize(12)));
+////            table.addCell(new Cell().add(new Paragraph("Remaining Amount").setFontSize(12)));
+////            table.addCell(new Cell().add(new Paragraph("Principal Amount").setFontSize(12)));
+//
+////            int serialNO = 0;
+//
+//
+////            document.add(titile);
+////            document.add(subHeading);
+////            document.add(table);
+////            document.close();
+//
+////            Toast.makeText(getContext(), file.toString(), Toast.LENGTH_SHORT).show();
+//
+//
+//        } catch (Exception e) {
+//            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+//            Log.e("TAG", "createPDF:exception " + e.getMessage());
+//
+//        }
+
+// pdfPTable.addCell("Food Expense");
+//         pdfPTable.addCell(this.totalFood.getText().toString());
+//         pdfPTable.addCell("Vehcle Expense");
+//         pdfPTable.addCell(this.totalVehicle.getText().toString());
+//         pdfPTable.addCell("Stay Expense");
+//         pdfPTable.addCell(this.totalStay.getText().toString());
+//         pdfPTable.addCell("Other Expense");
+//         pdfPTable.addCell(this.totalOther.getText().toString());
+//         pdfPTable.addCell("Total Amount");
+//         pdfPTable.addCell(this.totalExpense.getText().toString());
+//         pdfPTable.addCell("Toal division");
+//         pdfPTable.addCell(this.divTotal.getText().toString() + this.currsymbol);

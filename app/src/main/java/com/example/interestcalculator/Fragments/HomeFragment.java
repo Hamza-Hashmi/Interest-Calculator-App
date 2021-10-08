@@ -3,22 +3,26 @@ package com.example.interestcalculator.Fragments;
 import static com.example.interestcalculator.widgets.Commons.getMonthFormat;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
 
 import com.example.interestcalculator.DbHeleper;
 import com.example.interestcalculator.R;
@@ -29,17 +33,17 @@ import com.example.interestcalculator.widgets.SharedHelper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 public class HomeFragment extends Fragment {
     FragmentHomeBinding homeBinding;
     DatePickerDialog.OnDateSetListener mDateSetlistener, mRDateListener;
-    String startDate,endDate;
-    long duration,mDuration;
+    String startDate, endDate;
+    long duration, mDuration;
     String interestType = "Simple";
     DbHeleper dbHeleper;
     InterestModel interestModel;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +55,7 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         homeBinding = FragmentHomeBinding.inflate(inflater, container, false);
 
-        if (SharedHelper.getKey(requireContext(),"isCompound").equalsIgnoreCase("true")){
+        if (SharedHelper.getKey(requireContext(), "isCompound").equalsIgnoreCase("true")) {
             homeBinding.interestCompountRadio.setChecked(true);
             interestType = "Compound 12M";
             homeBinding.interestSimpleRadio.setChecked(false);
@@ -65,14 +69,14 @@ public class HomeFragment extends Fragment {
         homeBinding.interestRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i){
+                switch (i) {
                     case R.id.interestSimpleRadio: {
-                        SharedHelper.putKey(requireContext(),"isCompound","false");
+                        SharedHelper.putKey(requireContext(), "isCompound", "false");
                         interestType = "Simple";
                         break;
                     }
-                    case R.id.interestCompountRadio:{
-                        SharedHelper.putKey(requireContext(),"isCompound","true");
+                    case R.id.interestCompountRadio: {
+                        SharedHelper.putKey(requireContext(), "isCompound", "true");
 
                         interestType = "Compound 12M";
                     }
@@ -80,7 +84,8 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        homeBinding.btnCalculate.setOnClickListener(view ->{
+        homeBinding.btnCalculate.setOnClickListener(view -> {
+            hideSoftKeyboard(getActivity());
             String pricipalAmout = homeBinding.edtPrincipleAmount.getEditText().getText().toString();
             String interestAmountPerMonth = homeBinding.edtIntersrPerMonth.getEditText().getText().toString();
             SimpleDateFormat sdf
@@ -88,75 +93,80 @@ public class HomeFragment extends Fragment {
                     "dd/MM/yyyy");
 
 
-
-
-            if (TextUtils.isEmpty(pricipalAmout) || TextUtils.isEmpty(interestAmountPerMonth)){
+            if (TextUtils.isEmpty(pricipalAmout) || TextUtils.isEmpty(interestAmountPerMonth)) {
                 Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
-            }else{
+            } else {
                 try {
                     duration = 0;
                     Date date1 = sdf.parse(startDate);
                     Date date2 = sdf.parse(endDate);
-                    Log.e("TAG", "onCreateView: " + date1 );
-                    Log.e("TAG", "onCreateView: " + date2 );
+                    Log.e("TAG", "onCreateView: " + date1);
+                    Log.e("TAG", "onCreateView: " + date2);
                     long difference = Math.abs(date1.getTime() - date2.getTime());
                     duration = difference / (24 * 60 * 60 * 1000);
 
-                        calculateAndSaveSimpleInterest(pricipalAmout,interestAmountPerMonth);
+                    calculateAndSaveSimpleInterest(pricipalAmout, interestAmountPerMonth);
                     /*else{
                         calculateAndSaveCompoundInterest(pricipalAmout,interestAmountPerMonth);
                     }*/
 
                 } catch (ParseException e) {
                     e.printStackTrace();
-                    Log.e("TAG", "onCreateView: timeDuration " + e.getMessage() );
+                    Log.e("TAG", "onCreateView: timeDuration " + e.getMessage());
                 }
             }
 
 
         });
-
-
         return homeBinding.getRoot();
 
+    }
+
+    private void hideSoftKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = activity.getCurrentFocus();
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 
     private void calculateAndSaveSimpleInterest(String pricipalAmout, String interestAmountPerMonth) {
 
-         long amount =  Long.parseLong(pricipalAmout);
-         long interstAmount =Long.parseLong(interestAmountPerMonth);
+        long amount = Long.parseLong(pricipalAmout);
+        long interstAmount = Long.parseLong(interestAmountPerMonth);
 
-        Log.e("TAG", "calculateAndSaveSimpleInterest: duration"  + getIntrestDuration(duration) );
+        Log.e("TAG", "calculateAndSaveSimpleInterest: duration" + getIntrestDuration(duration));
         long interest = ((amount * interstAmount) / 100) * mDuration;
         long totalAmount = Long.parseLong(pricipalAmout) + interest;
 
         try {
 
-            interestModel = new InterestModel(String.valueOf(System.currentTimeMillis()),startDate,endDate,pricipalAmout,getIntrestDuration(duration),String.valueOf(interest),interestAmountPerMonth,interestType,String.valueOf(totalAmount));
-            Log.e("TAG", "onCreateView: " + interestModel.toString() );
-            if (dbHeleper.addNewHistory(interestModel)){
+            interestModel = new InterestModel(String.valueOf(System.currentTimeMillis()), startDate, endDate, pricipalAmout, getIntrestDuration(duration), String.valueOf(interest), interestAmountPerMonth, interestType, String.valueOf(totalAmount));
+            Log.e("TAG", "onCreateView: " + interestModel.toString());
+            if (dbHeleper.addNewHistory(interestModel)) {
 
                 homeBinding.bottomLayout.setVisibility(View.VISIBLE);
                 homeBinding.durationTv.setText("Duration: " + getIntrestDuration(duration));
-                homeBinding.intersetTv.setText("Interest: " +interest);
+                homeBinding.intersetTv.setText("Interest: " + interest);
                 homeBinding.totalAmountTv.setText("Total Amount: " + totalAmount);
                 homeBinding.interestTypeTv.setText(interestType);
 
-                homeBinding.btnSave.setOnClickListener(view ->{
+                homeBinding.btnSave.setOnClickListener(view -> {
 
-                    showDialouge(pricipalAmout,interest,totalAmount,interestAmountPerMonth);
+                    showDialouge(pricipalAmout, interest, totalAmount, interestAmountPerMonth);
 
                 });
 
 
-            }else{
+            } else {
                 Toast.makeText(getContext(), "An Error Occured ", Toast.LENGTH_SHORT).show();
             }
 
-        }catch (Exception e){
-            Log.e("TAG", "insert exception " + e.getMessage() );
+        } catch (Exception e) {
+            Log.e("TAG", "insert exception " + e.getMessage());
         }
 
     }
@@ -164,112 +174,120 @@ public class HomeFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     private void initReturnDate() {
-
         homeBinding.edtReturnDate.getEditText().setOnClickListener(v -> {
-            Calendar cal = Calendar.getInstance();
-            int year = cal.get(Calendar.YEAR);
-            int month = cal.get(Calendar.MONTH);
-            int day = cal.get(Calendar.DAY_OF_MONTH);
+            Dialog mDialog = new Dialog(getContext());
+            View mview = getLayoutInflater().inflate(R.layout.data_picker_dialog, null);
+            mDialog.setContentView(mview);
+            mDialog.show();
 
-            month = month + 1;
+            DatePicker mDatePicker = mview.findViewById(R.id.datePicker);
+            LinearLayout btnOk = mview.findViewById(R.id.btnOk);
+            LinearLayout btnCancler = mview.findViewById(R.id.btnCancler);
+            TextView tvTitle = mview.findViewById(R.id.dialogTitile);
 
-            DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                    mRDateListener, day, month, year);
+            tvTitle.setText("Return Date");
 
+            mDatePicker.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> {
+                homeBinding.edtReturnDate.getEditText().setText(dayOfMonth + "-" + monthOfYear + "(" + getMonthFormat(monthOfYear) + ")" + "-" + year);
+                endDate = dayOfMonth + "/" + monthOfYear + "/" + year;
+            });
 
-            datePickerDialog.setTitle("Return Date");
-            datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            datePickerDialog.show();
+            btnOk.setOnClickListener(v1 -> mDialog.dismiss());
+            btnCancler.setOnClickListener(v2 -> mDialog.dismiss());
+
+            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+            layoutParams.copyFrom(mDialog.getWindow().getAttributes());
+            layoutParams.width = 600;
+            layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            mDialog.getWindow().setAttributes(layoutParams);
+
         });
-        mRDateListener = (view, year, month, dayOfMonth) -> {
-            month++;
-            homeBinding.edtReturnDate.getEditText().setText(dayOfMonth + "-" + month + "(" + getMonthFormat(month + 1) + ")" + "-" + year);
-            endDate = dayOfMonth +  "/" + month +"/"+year;
-
-        };
     }
 
     //    ! -> Given DatePicker
     @SuppressLint("SetTextI18n")
     private void initGivenDate() {
         homeBinding.edtGivenDate.getEditText().setOnClickListener(v -> {
-            Calendar cal = Calendar.getInstance();
-            int year = cal.get(Calendar.YEAR);
-            int month = cal.get(Calendar.MONTH);
-            int day = cal.get(Calendar.DAY_OF_MONTH);
 
-            month = month + 1;
-            DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                    mDateSetlistener, day, month, year);
-            datePickerDialog.setTitle("Given Date");
-            datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            datePickerDialog.show();
+            Dialog mDialog = new Dialog(getContext());
+            View mview = getLayoutInflater().inflate(R.layout.data_picker_dialog, null);
+            mDialog.setContentView(mview);
+            mDialog.show();
+
+            DatePicker mDatePicker = mview.findViewById(R.id.datePicker);
+            LinearLayout btnOk = mview.findViewById(R.id.btnOk);
+            LinearLayout btnCancler = mview.findViewById(R.id.btnCancler);
+            TextView tvTitle = mview.findViewById(R.id.dialogTitile);
+
+            tvTitle.setText("Given Date");
+
+            mDatePicker.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> {
+                homeBinding.edtGivenDate.getEditText().setText(dayOfMonth + "-" + monthOfYear + "(" + getMonthFormat(monthOfYear) + ")" + "-" + year);
+                startDate = dayOfMonth + "/" + monthOfYear + "/" + year;
+            });
+
+            btnOk.setOnClickListener(v1 -> mDialog.dismiss());
+            btnCancler.setOnClickListener(v2 -> mDialog.dismiss());
+
+            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+            layoutParams.copyFrom(mDialog.getWindow().getAttributes());
+            layoutParams.width = 600;
+            layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            mDialog.getWindow().setAttributes(layoutParams);
+
         });
 
-        mDateSetlistener = (view, year, month, dayOfMonth) -> {
-
-            month++;
-
-            homeBinding.edtGivenDate.getEditText().setText(dayOfMonth + "-" + month + "(" + getMonthFormat(month + 1) + ")" + "-" + year);
-            startDate = dayOfMonth  + "/" + month +"/"+year;
-        };
-
     }
 
 
+    private String getIntrestDuration(long duration) {
 
-    private String getIntrestDuration(long duration){
+        long days = duration;
 
-          long days = duration;
+        Log.e("TAG", "getIntrestDuration: " + days);
 
-        Log.e("TAG", "getIntrestDuration: " + days );
+        long totalMonthsInDays = days / 30;
 
-          long totalMonthsInDays = days/30;
+        Log.e("TAG", "totalMonths: " + totalMonthsInDays);
 
-        Log.e("TAG", "totalMonths: " + totalMonthsInDays );
-
-        long totalYear = totalMonthsInDays/12;
-        Log.e("TAG", "totalYear: " + totalYear );
+        long totalYear = totalMonthsInDays / 12;
+        Log.e("TAG", "totalYear: " + totalYear);
 
 
-        if (days %30 == 0){
+        if (days % 30 == 0) {
             days = 0;
 
-            Log.e("TAG", "totalMonths reminder: " + totalMonthsInDays );
+            Log.e("TAG", "totalMonths reminder: " + totalMonthsInDays);
 
         }
-          if (totalMonthsInDays %12 == 0){
-              totalMonthsInDays = 0;
+        if (totalMonthsInDays % 12 == 0) {
+            totalMonthsInDays = 0;
 
-              Log.e("TAG", "totalMonths reminder: " + totalMonthsInDays );
+            Log.e("TAG", "totalMonths reminder: " + totalMonthsInDays);
 
-          }
-          if (totalYear >= 1 && totalMonthsInDays >=1 ){
-              Log.e("TAG", "totalMonths and total year: ");
-              mDuration = totalYear + totalMonthsInDays;
-              return totalYear + " year " + totalMonthsInDays + " month";
+        }
+        if (totalYear >= 1 && totalMonthsInDays >= 1) {
+            Log.e("TAG", "totalMonths and total year: ");
+            mDuration = totalYear + totalMonthsInDays;
+            return totalYear + " year " + totalMonthsInDays + " month";
 
-          }
-          else if (totalYear >=1){
-              mDuration = totalYear;
-               return totalYear + " year ";
-          }
-          else if (totalMonthsInDays>=1 && days >=1 ){
-              Log.e("TAG", "getIntrestDuration: " + totalMonthsInDays );
-              mDuration = totalMonthsInDays + 0;
-              return  totalMonthsInDays + " month ";
-          }
-          else if (totalMonthsInDays>=1){
-              mDuration = totalMonthsInDays;
-              return  totalMonthsInDays + " month ";
-          }
-           mDuration = days;
-          return days + " days";
+        } else if (totalYear >= 1) {
+            mDuration = totalYear;
+            return totalYear + " year ";
+        } else if (totalMonthsInDays >= 1 && days >= 1) {
+            Log.e("TAG", "getIntrestDuration: " + totalMonthsInDays);
+            mDuration = totalMonthsInDays + 0;
+            return totalMonthsInDays + " month ";
+        } else if (totalMonthsInDays >= 1) {
+            mDuration = totalMonthsInDays;
+            return totalMonthsInDays + " month ";
+        }
+        mDuration = days;
+        return days + " days";
     }
 
 
-
-    private void showDialouge(String pricipalAmout, double interest, double totalAmount, String interestAmountPerMonth){
+    private void showDialouge(String pricipalAmout, double interest, double totalAmount, String interestAmountPerMonth) {
         CustomSaveDialougeBinding mBinding;
 
         mBinding = CustomSaveDialougeBinding.inflate(getLayoutInflater());
@@ -287,19 +305,17 @@ public class HomeFragment extends Fragment {
             String cityName = mBinding.cityNameEt.getText().toString();
             String recordName = mBinding.recordNameEt.getText().toString();
             String remark = mBinding.remarksEt.getText().toString();
-            if (TextUtils.isEmpty(cityName ) || TextUtils.isEmpty(recordName) || TextUtils.isEmpty(remark)){
+            if (TextUtils.isEmpty(cityName) || TextUtils.isEmpty(recordName) || TextUtils.isEmpty(remark)) {
                 dialog.dismiss();
                 Toast.makeText(requireContext(), "Data not saved", Toast.LENGTH_SHORT).show();
-            }
-            else{
+            } else {
 
-                interestModel = new InterestModel(String.valueOf(System.currentTimeMillis()),startDate,endDate,pricipalAmout,getIntrestDuration(duration),String.valueOf(interest),interestAmountPerMonth,interestType,String.valueOf(totalAmount),recordName,cityName,remark);
+                interestModel = new InterestModel(String.valueOf(System.currentTimeMillis()), startDate, endDate, pricipalAmout, getIntrestDuration(duration), String.valueOf(interest), interestAmountPerMonth, interestType, String.valueOf(totalAmount), recordName, cityName, remark);
 
-                if (dbHeleper.saveInterest(interestModel)){
+                if (dbHeleper.saveInterest(interestModel)) {
                     Toast.makeText(requireContext(), "Data Saved", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
-                }
-                else {
+                } else {
                     Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 }

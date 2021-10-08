@@ -50,4 +50,7 @@
     <string name="allow_fraction">Allow Fraction</string>
     <string name="last_year_month_amp_days_compound_exemptions"><![CDATA[Last Year Month & Days Compound Exemptions]]></string>
     <string name="compound_interest_will_not_be">Compound Interest will not be calculated only for last year months and days</string>
+    <string name="cancle">Cancle</string>
+    <string name="ok">Ok</string>
+    <string name="create_pdf">Create PDF</string>
 </resources>

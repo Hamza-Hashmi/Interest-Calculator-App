@@ -37,7 +37,7 @@ public class IntrimeHistoryAdapter extends RecyclerView.Adapter<IntrimeHistoryAd
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-            InterestModel model = list.get(position);
+        InterestModel model = list.get(position);
         holder.binding.principalAmountTv.setText("Principal Amount "+model.getPrincipalAmount());
         holder.binding.totalAmountTv.setText(model.getTotalAmount());
         holder.binding.tvIntrimePayment.setText(model.getIntrimePayment());
