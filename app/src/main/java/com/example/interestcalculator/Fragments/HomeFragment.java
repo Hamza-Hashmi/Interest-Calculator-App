@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -34,6 +35,7 @@ import com.example.interestcalculator.widgets.SharedHelper;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class HomeFragment extends Fragment {
     FragmentHomeBinding homeBinding;
@@ -54,13 +56,13 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         homeBinding = FragmentHomeBinding.inflate(inflater, container, false);
-
         if (SharedHelper.getKey(requireContext(), "isCompound").equalsIgnoreCase("true")) {
             homeBinding.interestCompountRadio.setChecked(true);
             interestType = "Compound 12M";
             homeBinding.interestSimpleRadio.setChecked(false);
         }
 
+        setCurrentDate();
         initGivenDate();
         initReturnDate();
 
@@ -123,6 +125,23 @@ public class HomeFragment extends Fragment {
 
     }
 
+//    private void edtChangeListener() {
+//        homeBinding.edtPrincipleAmount.getEditText().addTextChangedListener(new NumberThousandWartcher(homeBinding.edtPrincipleAmount.getEditText()));
+//
+//        homeBinding.edtPrincipleAmount.getEditText().addTextChangedListener(new NumberThousandWartcher(homeBinding.edtIntersrPerMonth.getEditText()));
+//
+//    }
+
+    private void setCurrentDate() {
+        Date c = Calendar.getInstance().getTime();
+        System.out.println("Current time => " + c);
+
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        String formattedDate = df.format(c);
+        startDate = formattedDate;
+
+    }
+
     private void hideSoftKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         View view = activity.getCurrentFocus();
@@ -181,6 +200,8 @@ public class HomeFragment extends Fragment {
             mDialog.show();
 
             DatePicker mDatePicker = mview.findViewById(R.id.datePicker);
+            mDatePicker.setMinDate(Date.parse(startDate));
+
             LinearLayout btnOk = mview.findViewById(R.id.btnOk);
             LinearLayout btnCancler = mview.findViewById(R.id.btnCancler);
             TextView tvTitle = mview.findViewById(R.id.dialogTitile);
@@ -188,6 +209,7 @@ public class HomeFragment extends Fragment {
             tvTitle.setText("Return Date");
 
             mDatePicker.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> {
+                monthOfYear += 1;
                 homeBinding.edtReturnDate.getEditText().setText(dayOfMonth + "-" + monthOfYear + "(" + getMonthFormat(monthOfYear) + ")" + "-" + year);
                 endDate = dayOfMonth + "/" + monthOfYear + "/" + year;
             });
@@ -222,6 +244,7 @@ public class HomeFragment extends Fragment {
             tvTitle.setText("Given Date");
 
             mDatePicker.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> {
+                monthOfYear += 1;
                 homeBinding.edtGivenDate.getEditText().setText(dayOfMonth + "-" + monthOfYear + "(" + getMonthFormat(monthOfYear) + ")" + "-" + year);
                 startDate = dayOfMonth + "/" + monthOfYear + "/" + year;
             });

@@ -8,25 +8,25 @@ import static com.example.interestcalculator.Activities.DashboardActivity.TOTAL_
 import static com.example.interestcalculator.widgets.Commons.getMonthFormat;
 
 import android.app.DatePickerDialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.app.Dialog;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.example.interestcalculator.DbHeleper;
+import com.example.interestcalculator.R;
 import com.example.interestcalculator.databinding.FragmentAddPaymentBinding;
 import com.example.interestcalculator.models.InterestModel;
-
-import java.util.Calendar;
 
 public class AddPaymentFragment extends Fragment {
 
@@ -38,7 +38,8 @@ public class AddPaymentFragment extends Fragment {
     double mTotalAmount = 0;
     double remainingAmount = 0;
 
-    String mDate,mAmount;
+    String mDate, mAmount;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,7 +57,7 @@ public class AddPaymentFragment extends Fragment {
 
         initDate();
 
-        Log.e("TAG", "onCreateView: " + mTotalAmount );
+        Log.e("TAG", "onCreateView: " + mTotalAmount);
         Log.e("TAG", "onCreateView: " + ID);
         Log.e("TAG", "onCreateView: " + NAME);
         Log.e("TAG", "onCreateView: " + TOTAL_AMOUNT);
@@ -64,48 +65,46 @@ public class AddPaymentFragment extends Fragment {
         Log.e("TAG", "onCreateView: " + DURATION);
 
 
-        binding.btnCalculate.setOnClickListener(view ->{
-               mDate = binding.edtInterimPayDate.getEditText().getText().toString();
-               mAmount = binding.edtPayingAmount.getEditText().getText().toString();
-              if (TextUtils.isEmpty(mDate)){
-                  Toast.makeText(getContext(), "please select date", Toast.LENGTH_SHORT).show();
-                  return;
-              }
-              if (TextUtils.isEmpty(mAmount)){
-                  Toast.makeText(getContext(), "Please Enter amount", Toast.LENGTH_SHORT).show();
-                  return;
-              }
+        binding.btnCalculate.setOnClickListener(view -> {
+            mDate = binding.edtInterimPayDate.getEditText().getText().toString();
+            mAmount = binding.edtPayingAmount.getEditText().getText().toString();
+            if (TextUtils.isEmpty(mDate)) {
+                Toast.makeText(getContext(), "please select date", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (TextUtils.isEmpty(mAmount)) {
+                Toast.makeText(getContext(), "Please Enter amount", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             remainingAmount = mTotalAmount - Integer.parseInt(mAmount);
 
-              binding.remainingAmountTv.setText(""+remainingAmount);
-              binding.tvtotalAmount.setText(""+remainingAmount);
-
+            binding.remainingAmountTv.setText("" + remainingAmount);
+            binding.tvtotalAmount.setText("" + remainingAmount);
 
 
         });
 
 
         binding.btnSave.setOnClickListener(view -> {
-            String remark = "" ;
+            String remark = "";
             remark = binding.edtRemarks.getEditText().getText().toString();
 
             String remaining = binding.remainingAmountTv.getText().toString();
 
-            if(TextUtils.isEmpty(remaining)){
+            if (TextUtils.isEmpty(remaining)) {
                 Toast.makeText(getContext(), "Please Calculate interest", Toast.LENGTH_SHORT).show();
             }
             Log.e("TAG", "onCreateView: " + remainingAmount);
-            model = new InterestModel(ID,String.valueOf(System.currentTimeMillis()),PRINCIPAL_AMOUNT,DURATION,String.valueOf(mTotalAmount),mAmount,remark,String.valueOf(remainingAmount));
+            model = new InterestModel(ID, String.valueOf(System.currentTimeMillis()), PRINCIPAL_AMOUNT, DURATION, String.valueOf(mTotalAmount), mAmount, remark, String.valueOf(remainingAmount));
 
-            if (dbHeleper.insertIntrimePayment(model)){
-                 if (dbHeleper.updateTotalAmount(String.valueOf(remainingAmount),ID)){
-                     Toast.makeText(requireContext(), "Record Stored Successfully", Toast.LENGTH_SHORT).show();
-                 }
-                 else{
-                     Toast.makeText(requireContext(), "Update Error", Toast.LENGTH_SHORT).show();
-                 }
-            }else{
+            if (dbHeleper.insertIntrimePayment(model)) {
+                if (dbHeleper.updateTotalAmount(String.valueOf(remainingAmount), ID)) {
+                    Toast.makeText(requireContext(), "Record Stored Successfully", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireContext(), "Update Error", Toast.LENGTH_SHORT).show();
+                }
+            } else {
                 Toast.makeText(getContext(), "an error occured", Toast.LENGTH_SHORT).show();
             }
         });
@@ -115,21 +114,32 @@ public class AddPaymentFragment extends Fragment {
 
     private void initDate() {
         binding.edtInterimPayDate.getEditText().setOnClickListener(v -> {
-            Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
+            Dialog mDialog = new Dialog(getContext());
+            View mview = getLayoutInflater().inflate(R.layout.data_picker_dialog, null);
+            mDialog.setContentView(mview);
+            mDialog.show();
 
+            DatePicker mDatePicker = mview.findViewById(R.id.datePicker);
+            LinearLayout btnOk = mview.findViewById(R.id.btnOk);
+            LinearLayout btnCancler = mview.findViewById(R.id.btnCancler);
+            TextView tvTitle = mview.findViewById(R.id.dialogTitile);
 
-            DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_MinWidth, new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    monthOfYear++;
-                    binding.edtInterimPayDate.getEditText().setText(dayOfMonth + "-" + monthOfYear + "(" + getMonthFormat(monthOfYear) + ")" + "-" + year);
-                }
-            }, year, month, day);
-            datePickerDialog.setTitle("Pick Date");
-            datePickerDialog.show();
+            tvTitle.setText("Pay Date");
+
+            mDatePicker.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> {
+                monthOfYear += 1;
+                binding.edtInterimPayDate.getEditText().setText(dayOfMonth + "-" + monthOfYear + "(" + getMonthFormat(monthOfYear) + ")" + "-" + year);
+            });
+
+            btnOk.setOnClickListener(v1 -> mDialog.dismiss());
+            btnCancler.setOnClickListener(v2 -> mDialog.dismiss());
+
+            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+            layoutParams.copyFrom(mDialog.getWindow().getAttributes());
+            layoutParams.width = 600;
+            layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            mDialog.getWindow().setAttributes(layoutParams);
+
         });
 
     }
