@@ -61,6 +61,5 @@ public class LocalHelper {
 
         resources.updateConfiguration(configuration, resources.getDisplayMetrics());
 
-
     }
 }
